@@ -56,14 +56,6 @@ namespace Math
                     z_coords = other.z_coords;
                     return *this;
                 }
-                // Move Operator
-                Vector3D& operator=(Vector3D&& other)
-                {
-                    x_coords = std::move(other.x_coords);
-                    y_coords = std::move(other.y_coords);
-                    z_coords = std::move(other.z_coords);
-                    return *this;
-                }
                 Vector3D operator-() const {
                     return Vector3D(-x_coords, -y_coords, -z_coords);
                 }
