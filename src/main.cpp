@@ -70,33 +70,11 @@ Math::Point3D  generate_color(Ray *r, Shape::hit_record *rec,  Scene * scene, in
     return Math::Point3D{0, 0, 0};
 }
 
-int main() {
 
-    // TODO: Move to Camera Class
-    const auto aspect_ratio = 16.0 / 9.0;
-    const int image_width = 400;
-    const int image_height = static_cast<int>(image_width / aspect_ratio);
-    auto viewport_height = 2.0;
-    auto viewport_width = aspect_ratio * viewport_height;
-    auto origin = Math::Point3D(0, 0, 0);
-    auto horizontal = Math::Point3D(viewport_width, 0, 0);
-    auto vertical = Math::Point3D(0, viewport_height, 0);
-    Shape::Rectangle3D *rect = new Shape::Rectangle3D(&origin , &vertical, &horizontal);
-    Camera cam = Camera(&origin, rect);
-
-
-    Shape::hit_record *rec = new Shape::hit_record();
-    Scene *scene = new Scene();
-    scene->add_sphere(Shape::Sphere(new Math::Point3D(1.4, 0, -0.5), 1));
-    scene->add_sphere(Shape::Sphere(new Math::Point3D(0, -103.5, -1),100));
-    scene->add_sphere(Shape::Sphere(new Math::Point3D(-0.2, 0, -1), 0.5));
-
-
-    //! Marche pas
-    int antialisaing = 100;
-    int maxDepth = 50;
-
+void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int antialisaing, int maxDepth)
+{
     Math::Point3D color_gen = Math::Point3D {0, 0, 0};
+    Shape::hit_record *rec = new Shape::hit_record();
     std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
     for (int j = image_height - 1; j >= 0; --j) {
         for (int i = 0; i < image_width; ++i)
@@ -112,6 +90,31 @@ int main() {
             rec->t = INFINITY;
         }
     }
+}
+int main() {
+    // TODO: Move to Camera Class
+    const auto aspect_ratio = 16.0 / 9.0;
+    const int image_width = 400;
+    const int image_height = static_cast<int>(image_width / aspect_ratio);
+    auto viewport_height = 2.0;
+    auto viewport_width = aspect_ratio * viewport_height;
+    auto origin = Math::Point3D(0, 0, 0);
+    auto horizontal = Math::Point3D(viewport_width, 0, 0);
+    auto vertical = Math::Point3D(0, viewport_height, 0);
+    Shape::Rectangle3D *rect = new Shape::Rectangle3D(&origin , &vertical, &horizontal);
+    Camera cam = Camera(&origin, rect);
 
+
+    Scene *scene = new Scene();
+    scene->add_sphere(Shape::Sphere(new Math::Point3D(1.4, 0, -0.5), 1));
+    scene->add_sphere(Shape::Sphere(new Math::Point3D(0, -103.5, -1),100));
+    scene->add_sphere(Shape::Sphere(new Math::Point3D(-0.2, 0, -1), 0.5));
+
+
+    //! Marche pas
+    int antialisaing = 100;
+    int maxDepth = 50;
+
+    raytracer(cam, scene, image_width, image_height, antialisaing, maxDepth);
     return 0;
 }
