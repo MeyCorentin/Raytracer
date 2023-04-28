@@ -25,7 +25,7 @@ double random_double(double min, double max) {
 
 Math::Point3D random_in_unit_sphere() {
     while (true) {
-        auto p = Math::Point3D(random_double(-1,1), random_double(-1,1), random_double(-1,1));
+        Math::Point3D p = Math::Point3D(random_double(-1,1), random_double(-1,1), random_double(-1,1));
         if (p.length_squared() >= 1) continue;
         return p;
     }
@@ -42,7 +42,7 @@ Math::Point3D random_in_hemisphere(Math::Point3D& normal) {
 void ppm_output(std::ostream &out, Math::Vector3D pixel_color, int antialisaing) {
     if ((pixel_color.x_coords) >= 0 && ( pixel_color.y_coords) >= 0 && (pixel_color.z_coords) >= 0)
     {
-        auto scale = 1.0 / antialisaing;
+        double scale = 1.0 / antialisaing;
         double r = sqrt(scale * pixel_color.x_coords);
         double g = sqrt(scale * pixel_color.y_coords);
         double b = sqrt(scale * pixel_color.z_coords);
@@ -64,12 +64,11 @@ Math::Point3D  generate_color(Ray *r, Shape::hit_record *rec,  Scene * scene, in
     }
 
     Math::Point3D unit_direction = Math::Point3D(r->direction->x_coords, r->direction->y_coords, r->direction->z_coords).unit_vector();
-    auto t = 0.5*(unit_direction.y_coords + 1.0);
+    double t = 0.5*(unit_direction.y_coords + 1.0);
     if (rec->t != INFINITY)
         return (1.0-t)*rec->normal;
     return Math::Point3D{0, 0, 0};
 }
-
 
 void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int antialisaing, int maxDepth)
 {
@@ -81,8 +80,8 @@ void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int 
         {
             color_gen = Math::Point3D {0, 0, 0};
             for (int s = 0; s < antialisaing; ++s) {
-                auto u = (static_cast<double>(i) + (rand() / (RAND_MAX + 1.0))) / (image_width - 1);
-                auto v = (static_cast<double>(j) + (rand() / (RAND_MAX + 1.0))) / (image_height - 1);
+                double u = (static_cast<double>(i) + (rand() / (RAND_MAX + 1.0))) / (image_width - 1);
+                double v = (static_cast<double>(j) + (rand() / (RAND_MAX + 1.0))) / (image_height - 1);
                 Ray *r = cam.ray(u, v);
                 color_gen += generate_color(r, rec, scene, maxDepth);
             }
@@ -93,23 +92,21 @@ void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int 
 }
 int main() {
     // TODO: Move to Camera Class
-    const auto aspect_ratio = 16.0 / 9.0;
-    const int image_width = 400;
-    const int image_height = static_cast<int>(image_width / aspect_ratio);
-    auto viewport_height = 2.0;
-    auto viewport_width = aspect_ratio * viewport_height;
-    auto origin = Math::Point3D(0, 0, 0);
-    auto horizontal = Math::Point3D(viewport_width, 0, 0);
-    auto vertical = Math::Point3D(0, viewport_height, 0);
+    double aspect_ratio = 16.0 / 9.0;
+    int image_width = 400;
+    int image_height = static_cast<int>(image_width / aspect_ratio);
+    double viewport_height = 2.0;
+    double viewport_width = aspect_ratio * viewport_height;
+    Math::Point3D origin = Math::Point3D(0, 0, 0);
+    Math::Point3D horizontal = Math::Point3D(viewport_width, 0, 0);
+    Math::Point3D vertical = Math::Point3D(0, viewport_height, 0);
     Shape::Rectangle3D *rect = new Shape::Rectangle3D(&origin , &vertical, &horizontal);
     Camera cam = Camera(&origin, rect);
-
 
     Scene *scene = new Scene();
     scene->add_sphere(Shape::Sphere(new Math::Point3D(1.4, 0, -0.5), 1));
     scene->add_sphere(Shape::Sphere(new Math::Point3D(0, -103.5, -1),100));
     scene->add_sphere(Shape::Sphere(new Math::Point3D(-0.2, 0, -1), 0.5));
-
 
     //! Marche pas
     int antialisaing = 100;

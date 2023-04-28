@@ -24,12 +24,12 @@ class Scene {
         bool hit_global(const Ray& r, double t_min, double t_max, Shape::hit_record& rec) {
             Shape::hit_record temp_rec;
             bool hit_anything = false;
-            auto closest_so_far = t_max;
+            double temp_t_max = t_max;
 
             for (const auto& object : object_list) {
-                if (object->hits(r, t_min, closest_so_far, temp_rec)) {
+                if (object->hits(r, t_min, temp_t_max, temp_rec)) {
                     hit_anything = true;
-                    closest_so_far = temp_rec.t;
+                    temp_t_max = temp_rec.t;
                     rec = temp_rec;
                 }
             }
