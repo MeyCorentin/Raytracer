@@ -10,8 +10,7 @@
 
 class IMaterial {
     public:
-        IMaterial();
-        ~IMaterial();
+        ~IMaterial() = default;
 
     protected:
     private:

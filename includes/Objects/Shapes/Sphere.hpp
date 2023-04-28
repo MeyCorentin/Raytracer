@@ -8,11 +8,10 @@
 #ifndef Sphere_HPP
 #define Sphere_HPP
 
-#include "../../interface/IShape.hpp"
-#include "../../interface/IShape.hpp"
-#include "../../Math/Point3D.hpp"
-#include "../../Math/Vector3D.hpp"
-#include "../../Camera/Ray.hpp"
+class Ray;
+class IShape;
+class Point3D;
+class Vector3D;
 
 namespace Shape
 {
@@ -24,7 +23,7 @@ namespace Shape
         Math::Point3D normal;
         double t;
     };
-    class Sphere {
+    class Sphere: public IShape {
         public:
             Sphere() {};
             Sphere(Math::Point3D *origin, double radius)

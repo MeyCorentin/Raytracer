@@ -8,14 +8,14 @@
 #ifndef Plane_HPP
 #define Plane_HPP
 
-#include "../interface/IShape.hpp"
+class IShape;
 
 namespace Shape
 {
     class Plane: public IShape {
         public:
-            Plane();
-            ~Plane();
+            Plane() {};
+            ~Plane() {};
 
         protected:
         private:

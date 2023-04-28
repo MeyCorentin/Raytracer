@@ -8,10 +8,10 @@
 #ifndef Rectangle3D_HPP
 #define Rectangle3D_HPP
 
-#include "../../interface/IShape.hpp"
-#include "../../Math/Point3D.hpp"
-#include "../../Math/Vector3D.hpp"
-#include "../../Camera/Ray.hpp"
+class Ray;
+class IShape;
+class Point3D;
+class Vector3D;
 
 namespace Shape
 {

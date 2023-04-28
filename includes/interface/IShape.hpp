@@ -8,12 +8,17 @@
 #ifndef IShape_HPP
     #define IShape_HPP
 
-#include "IObject.hpp"
+namespace Shape
+{
+    class hit_record;
+}
+class IObject;
+class Ray;
 
 class IShape: public IObject {
     public:
-        IShape() {};
-        ~IShape() {};
+        virtual ~IShape() = default;
+        virtual bool hits(const Ray& r, double t_min, double t_max, Shape::hit_record& rec) = 0;
 
     protected:
     private:

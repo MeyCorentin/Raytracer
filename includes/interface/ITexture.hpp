@@ -10,8 +10,7 @@
 
 class ITexture {
     public:
-        ITexture();
-        ~ITexture();
+        ~ITexture() = default;
 
     protected:
     private:

@@ -12,8 +12,7 @@
 
 class ILight: public IObject {
     public:
-        ILight() {};
-        ~ILight() {};
+        ~ILight() = default;
 
     protected:
     private:
