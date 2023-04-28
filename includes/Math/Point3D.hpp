@@ -5,8 +5,8 @@
 ** Point3D
 */
 
-#ifndef Point
-    #define Point
+#ifndef Point3D_HPP
+#define Point3D_HPP
 
 #include <iostream>
 #include <string>
@@ -56,6 +56,9 @@ namespace Math
                 z_coords = other.z_coords;
                 return *this;
             }
+            Point3D operator-() const {
+                return Point3D(-x_coords, -y_coords, -z_coords);
+            }
             Point3D& operator-(Vector3D&& other)
             {
                 x_coords -= other.x_coords;
@@ -79,6 +82,12 @@ namespace Math
                 return *this;
             }
 
+            Point3D& operator+=(const Point3D &v) {
+                x_coords += v.x_coords;
+                y_coords += v.y_coords;
+                z_coords += v.z_coords;
+                return *this;
+            }
             Point3D operator/=(double t) {
                 return *this *= 1/t;
             }

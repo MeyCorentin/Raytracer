@@ -5,8 +5,9 @@
 ** Vector3D
 */
 
-#ifndef Vector
-    #define Vector
+#ifndef Vector3D_HPP
+#define Vector3D_HPP
+
 
 #include <iostream>
 #include <string>

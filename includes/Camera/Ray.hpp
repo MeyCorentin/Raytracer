@@ -5,16 +5,13 @@
 ** Ray
 */
 
-#ifndef Raytracer
-    #define Raytracer
+#ifndef Ray_HPP
+    #define Ray_HPP
 
+#include "../Math/Point3D.hpp"
+#include "../Math/Vector3D.hpp"
 
-#include "Point3D.hpp"
-#include "Vector3D.hpp"
-
-namespace Raytracer
-{
-    class Ray {
+class Ray {
         public:
             // Default constructor
             Ray() {};
@@ -68,7 +65,5 @@ namespace Raytracer
         protected:
         private:
     };
-} // namespace Raytracer
-
 
 #endif /* !Ray */

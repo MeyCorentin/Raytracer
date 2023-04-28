@@ -1,18 +1,21 @@
 /*
 ** EPITECH PROJECT, 2023
-** Rectangle_hpp
+** Rectangle3D
 ** File description:
-** Rectangle_hpp
+** Rectangle3D
 */
 
-#ifndef Rectangle_hpp
-#define Rectangle_hpp
+#ifndef Rectangle3D_HPP
+#define Rectangle3D_HPP
 
-#include "Point3D.hpp"
-#include "Vector3D.hpp"
-#include "Ray.hpp"
+#include "../../interface/IShape.hpp"
+#include "../../Math/Point3D.hpp"
+#include "../../Math/Vector3D.hpp"
+#include "../../Camera/Ray.hpp"
 
-class Rectangle3D {
+namespace Shape
+{
+    class Rectangle3D {
     public:
         Math::Point3D *origin;
         Math::Point3D *bottom_side;
@@ -28,4 +31,5 @@ class Rectangle3D {
     protected:
     private:
 };
-#endif /* !Rectangle_hpp */
+}
+#endif /* !Rectangle3D */

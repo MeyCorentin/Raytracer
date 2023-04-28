@@ -6,14 +6,17 @@
 */
 
 #ifndef Sphere_HPP
-    #define Sphere_HPP
+#define Sphere_HPP
 
-#include "Point3D.hpp"
-#include "Vector3D.hpp"
-#include "Ray.hpp"
+#include "../../interface/IShape.hpp"
+#include "../../interface/IShape.hpp"
+#include "../../Math/Point3D.hpp"
+#include "../../Math/Vector3D.hpp"
+#include "../../Camera/Ray.hpp"
 
-namespace Raytracer
+namespace Shape
 {
+
     class hit_record {
         public:
         hit_record() {}
@@ -21,7 +24,6 @@ namespace Raytracer
         Math::Point3D normal;
         double t;
     };
-
     class Sphere {
         public:
             Sphere() {};
