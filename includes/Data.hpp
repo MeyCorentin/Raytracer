@@ -135,12 +135,4 @@ class Get {
         };
 };
 
-namespace primitives
-{
-}
-
-
-namespace light
-{
-};
 #endif /* !DATA_HPP_ */
