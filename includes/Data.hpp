@@ -63,11 +63,13 @@ class Get {
                     double x, y, z, ra;
                     int r, g, b;
                 } mySphere;
+                std::vector<MySphere> vec_spheres;
                 struct MyPlane {
                     std::string axis;
                     double pos;
                     int r, g, b;
                 } myPlane;
+                std::vector<MyPlane> vec_planes;
             public:
                 Primitives(Get& _info)
                 {
@@ -80,10 +82,7 @@ class Get {
                         myPlane.axis = (std::string)((*it).lookup(".axis")), myPlane.pos = (*it).lookup(".position");
                         myPlane.r = (*it).lookup(".color.r"),myPlane.g = (*it).lookup(".color.g"),myPlane.b = (*it).lookup(".color.b");
                     }
-
                 }
-                std::vector<MySphere> vec_spheres;
-                std::vector<MyPlane> vec_planes;
                 void display_spheres() const {
                     for (size_t i = 0; i < vec_spheres.size(); i++) std::cout << "sphere[" << i + 1 << "] :: { x=[" <<
                     vec_spheres[i].x << "] y=[" << vec_spheres[i].y << "] z=[" << vec_spheres[i].z <<
@@ -95,6 +94,8 @@ class Get {
                     vec_planes[i].axis << "] position=[" << vec_planes[i].pos << "] r=[" << vec_planes[i].r <<
                     "] g=[" << vec_planes[i].g << "] b=[" << vec_planes[i].b << "] }" <<std::endl;
                 }
+                std::vector<MySphere> getSpheres() const{return vec_spheres;}
+                std::vector<MyPlane> getPlanes() const{return vec_planes;}
         };
         class Lights {
             private:
@@ -106,8 +107,10 @@ class Get {
                 struct MyPoint {
                     double x, y, z;
                 } myPoint;
+                std::vector<MyPoint> vec_point;
                 struct MyDirection {
                 } myDirection;
+                std::vector<MyDirection> vec_direction;
                 struct Ambient {
                     double value;
                 } _ambient;
@@ -124,11 +127,11 @@ class Get {
                 };
                 Ambient getAmbient()const{return _ambient;}
                 Diffuse getDiffuse()const{return _diffuse;}
+                std::vector<MyPoint> getPoints() const {return vec_point;}
+                std::vector<MyDirection> getDirections() const {return vec_direction;}
                 // std::vector<MyDirection> setDirectional(Lights& li) {
                 // }
-                std::vector<MyPoint> vec_point;
-                std::vector<MyDirection> vec_direction;
-                void display_point() {
+                void display_point() const {
                     for (size_t i = 0; i < vec_point.size(); i++) std::cout << "plane[" << i + 1 << "] :: { x=[" <<
                     vec_point[i].x << "] y=[" << vec_point[i].y << "] z=[" << vec_point[i].z << "] }" << std::endl;
                 }
