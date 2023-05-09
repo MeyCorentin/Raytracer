@@ -59,11 +59,23 @@ class Get {
                 const std::string prim = "primitives";
                 const std::string spheres = prim + ".spheres";
                 const std::string planes = prim + ".planes";
+                const std::string cones = prim + ".cones";
+                const std::string cylinder = prim + ".cylinders";
                 struct MySphere {
                     double x, y, z, ra;
                     int r, g, b;
                 } mySphere;
                 std::vector<MySphere> vec_spheres;
+                struct MyCone {
+                    double x, y, z, ra, h;
+                    int r, g, b;
+                } myCone;
+                std::vector<MyCone> vec_cones;
+                struct MyCylinder {
+                    double x, y, z, ra, h;
+                    int r, g, b;
+                } myCylinder;
+                std::vector<MyCylinder> vec_cylinders;
                 struct MyPlane {
                     std::string axis;
                     double pos;
@@ -78,6 +90,16 @@ class Get {
                         mySphere.ra = (*it).lookup(".r");
                         mySphere.r = (*it).lookup(".color.r"),mySphere.g = (*it).lookup(".color.g"),mySphere.b = (*it).lookup(".color.b");
                     }
+                    for (libconfig::SettingIterator it = _info.cfg.lookup(cones).begin();it != _info.cfg.lookup(cones).end();it++, vec_cones.emplace_back(myCone)) {
+                        myCone.x = (*it).lookup(".x"), myCone.y = (*it).lookup(".y"), myCone.z = (*it).lookup(".z");
+                        myCone.ra = (*it).lookup(".r"), myCone.h = (*it).lookup(".h");
+                        myCone.r = (*it).lookup(".color.r"),myCone.g = (*it).lookup(".color.g"), myCone.b = (*it).lookup(".color.b");
+                    }
+                    for (libconfig::SettingIterator it = _info.cfg.lookup(cylinder).begin();it != _info.cfg.lookup(cylinder).end();it++, vec_cylinders.emplace_back(myCylinder)) {
+                        myCylinder.x = (*it).lookup(".x"), myCylinder.y = (*it).lookup(".y"), myCylinder.z = (*it).lookup(".z");
+                        myCylinder.ra = (*it).lookup(".r"), myCylinder.h = (*it).lookup(".h");
+                        myCylinder.r = (*it).lookup(".color.r"),myCylinder.g = (*it).lookup(".color.g"), myCylinder.b = (*it).lookup(".color.b");
+                    }
                     for (libconfig::SettingIterator it = _info.cfg.lookup(planes).begin();it != _info.cfg.lookup(planes).end();it++, vec_planes.emplace_back(myPlane)) {
                         myPlane.axis = (std::string)((*it).lookup(".axis")), myPlane.pos = (*it).lookup(".position");
                         myPlane.r = (*it).lookup(".color.r"),myPlane.g = (*it).lookup(".color.g"),myPlane.b = (*it).lookup(".color.b");
@@ -89,12 +111,26 @@ class Get {
                     "] ra=[" << vec_spheres[i].ra << "] r=[" << vec_spheres[i].r << "] g=[" << vec_spheres[i].g
                     << "] b=[" << vec_spheres[i].b << "] }" <<std::endl;
                 }
+                void display_cones() const {
+                    for (size_t i = 0; i < vec_cones.size(); i++) std::cout << "cone[" << i + 1 << "] :: { x=[" <<
+                    vec_cones[i].x << "] y=[" << vec_cones[i].y << "] z=[" << vec_cones[i].z <<
+                    "] ra=[" << vec_cones[i].ra << "] h=[" << vec_cones[i].h << "] r= [" << vec_cones[i].r << "] g=[" << vec_cones[i].g
+                    << "] b=[" << vec_cones[i].b << "] }" <<std::endl;
+                }
+                void display_cylinders() const {
+                    for (size_t i = 0; i < vec_cylinders.size(); i++) std::cout << "cylinder[" << i + 1 << "] :: { x=[" <<
+                    vec_cylinders[i].x << "] y=[" << vec_cylinders[i].y << "] z=[" << vec_cylinders[i].z <<
+                    "] ra=[" << vec_cylinders[i].ra << "] h=[" << vec_cylinders[i].h << "] r= [" << vec_cylinders[i].r << "] g=[" << vec_cylinders[i].g
+                    << "] b=[" << vec_cylinders[i].b << "] }" <<std::endl;
+                }
                 void display_planes() const {
                     for (size_t i = 0; i < vec_planes.size(); i++) std::cout << "plane[" << i + 1 << "] :: { axis=[" <<
                     vec_planes[i].axis << "] position=[" << vec_planes[i].pos << "] r=[" << vec_planes[i].r <<
                     "] g=[" << vec_planes[i].g << "] b=[" << vec_planes[i].b << "] }" <<std::endl;
                 }
                 std::vector<MySphere> getSpheres() const{return vec_spheres;}
+                std::vector<MyCone> getCones() const{return vec_cones;}
+                std::vector<MyCylinder> getCylinders() const{return vec_cylinders;}
                 std::vector<MyPlane> getPlanes() const{return vec_planes;}
         };
         class Lights {
@@ -109,6 +145,8 @@ class Get {
                 } myPoint;
                 std::vector<MyPoint> vec_point;
                 struct MyDirection {
+                    double vector;
+                    double size;
                 } myDirection;
                 std::vector<MyDirection> vec_direction;
                 struct Ambient {
@@ -135,6 +173,48 @@ class Get {
                     for (size_t i = 0; i < vec_point.size(); i++) std::cout << "plane[" << i + 1 << "] :: { x=[" <<
                     vec_point[i].x << "] y=[" << vec_point[i].y << "] z=[" << vec_point[i].z << "] }" << std::endl;
                 }
+        };
+        class Transformations {
+            private:
+                const std::string transfo = "transformations";
+                const std::string trans = transfo + ".translation";
+                const std::string rot = transfo + ".rotation";
+
+                struct Translation {
+                    double x, y, z;
+                } _trans;
+                struct Rot {
+                    double x, y, z;
+                } _rot;
+            public:
+                Transformations(Get& _info)
+                {
+                    _trans.x = _info.cfg.lookup(trans + ".x");
+                    _trans.y = _info.cfg.lookup(trans + ".y");
+                    _trans.z = _info.cfg.lookup(trans + ".z");
+                    _rot.x = _info.cfg.lookup(rot + ".x");
+                    _rot.y = _info.cfg.lookup(rot + ".y");
+                    _rot.z = _info.cfg.lookup(rot + ".z");
+                }
+                Translation getTranslation()const{return _trans;}
+                Rot getRotation()const{return _rot;}
+        };
+        class Materials {
+            private:
+                const std::string mat = "materials";
+                const std::string flat = mat + ".flat";
+
+                struct Flat {
+                    int r, g, b;
+                } _flat;
+            public:
+                Materials(Get& _info)
+                {
+                    _flat.r = _info.cfg.lookup(flat + ".r");
+                    _flat.g = _info.cfg.lookup(flat + ".g");
+                    _flat.b = _info.cfg.lookup(flat + ".b");
+                }
+                Flat getFlat()const{return _flat;}
         };
 };
 
