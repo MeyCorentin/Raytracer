@@ -15,8 +15,9 @@
 int main()
 {
     try {
-        Get get("my.cfg");
-        Get::Camera camera(get);
+        libconfig::Config cfg;
+        cfg.readFile("my.cfg");
+        Camera camera(cfg);
         std::cout << "----------------------FROM CAMERA CLASS--------------------\n";
         std::cout << "RESOLUTION ::  |Width: " << camera.getResolution().width << std::endl;
         std::cout << "               |Height: " << camera.getResolution().height << std::endl;
@@ -28,7 +29,7 @@ int main()
         std::cout << "               |Z: " << camera.getRotation().z << std::endl;
         std::cout << "\nFIELDOFVIEW :: |FOV: " << camera.getFOV().value << std::endl;
 
-        Get::Primitives prim(get);
+        Primitives prim(cfg);
         std::cout << "----------------------FROM PRIMITIVES CLASS--------------------\n";
         prim.display_spheres();
         std::cout << std::endl;
@@ -38,13 +39,13 @@ int main()
         std::cout << std::endl;
         prim.display_cylinders();
         std::cout << std::endl;
-        Get::Lights li(get);
+        Lights li(cfg);
         std::cout << "----------------------FROM LIGHTS CLASS--------------------\n";
         std::cout << "Ambient: " << li.getAmbient().value << std::endl;
         std::cout << "Diffuse: " << li.getDiffuse().value << std::endl;
         li.display_point();
 
-        Get::Transformations transfo(get);
+        Transformations transfo(cfg);
         std::cout << "----------------------FROM Transformations CLASS--------------------\n";
         std::cout << "TRANSLATION :: |X: " << transfo.getTranslation().x << std::endl;
         std::cout << "               |Y: " << transfo.getTranslation().y << std::endl;
@@ -52,7 +53,7 @@ int main()
         std::cout << "\nROTATION :: |X: " << transfo.getRotation().x << std::endl;
         std::cout << "            |Y: " << transfo.getRotation().y << std::endl;
         std::cout << "            |Z: " << transfo.getRotation().z << std::endl;
-        Get::Materials material(get);
+        Materials material(cfg);
         std::cout << "----------------------FROM Materials CLASS--------------------\n";
         std::cout << "FLAT COLOR :: R: " << material.getFlat().r << std::endl;
         std::cout << "              G: " << material.getFlat().g << std::endl;
