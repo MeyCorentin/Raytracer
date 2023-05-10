@@ -15,6 +15,9 @@
 namespace Shape
 {
     class Sphere;
+    class Triangle3D;
+    class Cone;
+    // class Plane;
 }
 
 class Scene {
@@ -39,6 +42,14 @@ class Scene {
         void add_sphere(Shape::Sphere new_object)
         {
             object_list.push_back(std::make_shared<Shape::Sphere>(new_object));
+        }
+        void add_triangle(Shape::Triangle3D new_object)
+        {
+            object_list.push_back(std::make_shared<Shape::Triangle3D>(new_object));
+        }
+        void add_cone(Shape::Cone new_object)
+        {
+            object_list.push_back(std::make_shared<Shape::Cone>(new_object));
         }
         std::vector<std::shared_ptr<IObject>> object_list;
 

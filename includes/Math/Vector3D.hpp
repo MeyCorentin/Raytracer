@@ -82,6 +82,10 @@ namespace Math
                 {
                     return sqrt(((this->x_coords) * (this->x_coords)) + ((this->y_coords) * (this->y_coords)) + ((this->z_coords) * (this->z_coords)));
                 }
+                Vector3D cross(Vector3D other)
+                {
+                    return Vector3D(this->y_coords * other.z_coords - this->z_coords * other.y_coords, this->z_coords * other.x_coords - this->x_coords * other.z_coords, this->x_coords * other.y_coords - this->y_coords * other.x_coords);
+                }
                 Vector3D operator/(int value)
                 {
                     return Vector3D(this->x_coords / value, this->y_coords / value, this->z_coords / value);
