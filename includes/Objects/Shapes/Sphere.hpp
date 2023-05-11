@@ -65,5 +65,5 @@ class Sphere: public IShape {
 
     protected:
     private:
-    };
+};
 

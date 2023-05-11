@@ -14,6 +14,14 @@
 #include"Objects/Shapes/Sphere.hpp"
 #include "Objects/Shapes/hit_record.hpp"
 
+namespace Shape
+{
+    class Sphere;
+    class Triangle3D;
+    class Cone;
+    // class Plane;
+}
+
 class Scene {
     public:
         Scene() {};
@@ -36,6 +44,14 @@ class Scene {
         void add_sphere( Sphere new_object)
         {
             object_list.push_back(std::make_shared< Sphere>(new_object));
+        }
+        void add_triangle(Triangle3D new_object)
+        {
+            object_list.push_back(std::make_shared<Triangle3D>(new_object));
+        }
+        void add_cone(Cone new_object)
+        {
+            object_list.push_back(std::make_shared<Cone>(new_object));
         }
         std::vector<std::shared_ptr<IObject>> object_list;
 

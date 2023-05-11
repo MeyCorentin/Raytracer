@@ -26,8 +26,7 @@ namespace Math
     Point3D operator-(Math::Point3D *const u, const Math::Point3D v);
     Point3D operator-(Math::Point3D u,  Math::Point3D *v);
     Vector3D operator*(double scalar, const Vector3D& v);
-    Vector3D operator-(const Vector3D &u, Vector3D &v);
-    Vector3D operator-(Vector3D &u, Vector3D &v);
+    Vector3D operator-(Vector3D u, Vector3D v);
 }
 
 #endif /* !MAIN_HPP_ */

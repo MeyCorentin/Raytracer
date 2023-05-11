@@ -5,6 +5,7 @@
 #include "interface/IObject.hpp"
 #include "Objects/Shapes/Rectangle3D.hpp"
 #include "Objects/Shapes/Triangle3D.hpp"
+#include "Objects/Shapes/Cone.hpp"
 #include "Objects/Shapes/Plane.hpp"
 #include "Scene.hpp"
 #include "Camera/Camera.hpp"
@@ -14,6 +15,13 @@ double clamp(double x, double min, double max) {
     if (x > max) return max;
     return x;
 }
+
+
+double random_gen() {
+    // Returns a random real in [0,1).
+    return rand() / (RAND_MAX + 1.0);
+}
+
 
 double random_double(double min, double max) {
     return min + (max-min)*(rand() / (RAND_MAX + 1.0));
@@ -34,6 +42,7 @@ Math::Point3D random_in_hemisphere(Math::Point3D& normal) {
     else
         return -in_unit_sphere;
 }
+
 
 void ppm_output(std::ostream &out, Math::Vector3D pixel_color, int antialisaing) {
     if ((pixel_color.x_coords) >= 0 && ( pixel_color.y_coords) >= 0 && (pixel_color.z_coords) >= 0)
@@ -86,8 +95,8 @@ void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int 
         {
             color_gen = Math::Point3D {0, 0, 0};
             for (int s = 0; s < antialisaing; ++s) {
-                auto u = (static_cast<double>(i) + rand() / RAND_MAX) / (image_width - 1);
-                auto v = (static_cast<double>(j) + rand() / RAND_MAX) / (image_height - 1);
+                auto u = (static_cast<double>(i) + random_gen()) / (image_width - 1);
+                auto v = (static_cast<double>(j) + random_gen()) / (image_height - 1);
                 Ray *r = cam.ray(u, v);
                 color_gen += generate_color(r, rec, scene, maxDepth);
             }
@@ -99,15 +108,15 @@ void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int 
 
 int main() {
     // TODO: Move to Camera Class
-    const double aspect_ratio = 16.0 / 9.0;
-    const int image_width = 400;
-    const int image_height = static_cast<int>(image_width / aspect_ratio);
+    double aspect_ratio = 16.0 / 9.0;
+    int image_width = 1000;
+    int image_height = static_cast<int>(image_width / aspect_ratio);
     double viewport_height = 2.0;
     double viewport_width = aspect_ratio * viewport_height;
     Math::Point3D origin = Math::Point3D(0, 0, 0);
     Math::Point3D horizontal = Math::Point3D(viewport_width, 0, 0);
     Math::Point3D vertical = Math::Point3D(0, viewport_height, 0);
-     Rectangle3D *rect = new  Rectangle3D(&origin , &vertical, &horizontal);
+    Rectangle3D *rect = new Rectangle3D(&origin , &vertical, &horizontal);
     Camera cam = Camera(&origin, rect);
 
     Scene *scene = new Scene();
@@ -115,6 +124,7 @@ int main() {
     auto mate = std::make_shared<Mate>(Math::Vector3D(0.7, 0.3, 0.3), 5.0,  0.2, 0.1, 10.0);
     auto mate_1 = std::make_shared<Mate>(Math::Vector3D(0.5, 0.6, 0.3), 5.0,  0.2, 0.1, 10.0);
     auto mate_2 = std::make_shared<Mate>(Math::Vector3D(0.6, 0.3, 0.6), 5.0,  0.2, 0.1, 10.0);
+    auto mate_3 = std::make_shared<Mate>(Math::Vector3D(0.3, 0.3, 0.8), 5.0,  0.2, 0.1, 10.0);
     auto floor = std::make_shared<Mate>(Math::Vector3D(0.8, 0.8, 0.0), 5.0,  0.5, 0.2, 10.0);
     scene->add_sphere( Sphere(new Math::Point3D(0.5, -100.5, -1.0), 100.0,floor));
     scene->add_sphere( Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
@@ -123,6 +133,8 @@ int main() {
     scene->add_sphere( Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
     scene->add_sphere( Sphere(new Math::Point3D(2.0, 0.0, -2.0), 0.5, mate_1));
     scene->add_sphere( Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
+    scene->add_cone( Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
+    scene->add_cone(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
 
 
     //! Marche pas
