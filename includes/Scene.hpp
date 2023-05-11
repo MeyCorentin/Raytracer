@@ -41,17 +41,10 @@ class Scene {
 
             return hit_anything;
         }
-        void add_sphere( Sphere new_object)
+        template<class T>
+        void add_object(T object)
         {
-            object_list.push_back(std::make_shared< Sphere>(new_object));
-        }
-        void add_triangle(Triangle3D new_object)
-        {
-            object_list.push_back(std::make_shared<Triangle3D>(new_object));
-        }
-        void add_cone(Cone new_object)
-        {
-            object_list.push_back(std::make_shared<Cone>(new_object));
+            object_list.push_back(std::make_shared<T>(object));
         }
         std::vector<std::shared_ptr<IObject>> object_list;
 

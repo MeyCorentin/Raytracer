@@ -109,7 +109,7 @@ void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int 
 int main() {
     // TODO: Move to Camera Class
     double aspect_ratio = 16.0 / 9.0;
-    int image_width = 1000;
+    int image_width = 400;
     int image_height = static_cast<int>(image_width / aspect_ratio);
     double viewport_height = 2.0;
     double viewport_width = aspect_ratio * viewport_height;
@@ -126,15 +126,14 @@ int main() {
     auto mate_2 = std::make_shared<Mate>(Math::Vector3D(0.6, 0.3, 0.6), 5.0,  0.2, 0.1, 10.0);
     auto mate_3 = std::make_shared<Mate>(Math::Vector3D(0.3, 0.3, 0.8), 5.0,  0.2, 0.1, 10.0);
     auto floor = std::make_shared<Mate>(Math::Vector3D(0.8, 0.8, 0.0), 5.0,  0.5, 0.2, 10.0);
-    scene->add_sphere( Sphere(new Math::Point3D(0.5, -100.5, -1.0), 100.0,floor));
-    scene->add_sphere( Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
-    scene->add_sphere( Sphere(new Math::Point3D(-2.0, 0.0, -2.0), 0.5, mate_1));
-    scene->add_sphere( Sphere(new Math::Point3D(-1.0, 0.0, -2.0), 0.5, mate_2));
-    scene->add_sphere( Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
-    scene->add_sphere( Sphere(new Math::Point3D(2.0, 0.0, -2.0), 0.5, mate_1));
-    scene->add_sphere( Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
-    scene->add_cone( Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
-    scene->add_cone(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
+
+    scene->add_object( Sphere(new Math::Point3D(-2.0, 0.0, -2.0), 0.5, mate_1));
+    scene->add_object( Sphere(new Math::Point3D(-1.0, 0.0, -2.0), 0.5, mate_2));
+    scene->add_object( Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
+    scene->add_object( Sphere(new Math::Point3D(2.0, 0.0, -2.0), 0.5, mate_1));
+    scene->add_object( Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
+    scene->add_object( Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
+    scene->add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
 
 
     //! Marche pas
