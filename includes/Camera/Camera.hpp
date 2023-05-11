@@ -36,17 +36,6 @@ class Camera {
         Ray *ray(double u, double v) {
             return (new Ray(*origin, screen->pointAt(u, v)));
         }
-        void setup(double aspect_ratio, int image_width, double viewport_height)
-        {
-            this->origin = new Math::Point3D(0, 0, 0);
-            this->image_width = image_width;
-            this->image_height = static_cast<int>(image_width / aspect_ratio);
-            double viewport_width = aspect_ratio * viewport_height;
-            Math::Point3D horizontal = Math::Point3D(viewport_width, 0, 0);
-            Math::Point3D vertical = Math::Point3D(0, viewport_height, 0);
-            screen = new  Rectangle3D(origin , &vertical, &horizontal);
-
-        }
     protected:
     private:
 };

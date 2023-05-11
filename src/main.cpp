@@ -86,13 +86,13 @@ void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int 
     Math::Point3D color_gen = Math::Point3D {0, 0, 0};
     hit_record *rec = new  hit_record();
     std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
-    for (int j = image_height - 1; j >= 0; --j) {
-        for (int i = 0; i < image_width; ++i)
+    for (double j = image_height - 1; j >= 0; --j) {
+        for (double i = 0; i < image_width; ++i)
         {
             color_gen = Math::Point3D {0, 0, 0};
             for (int s = 0; s < antialisaing; ++s) {
-                double u = (static_cast<double>(i) + random_gen()) / (image_width - 1);
-                double v = (static_cast<double>(j) + random_gen()) / (image_height - 1);
+                double u = (i + random_gen()) / (image_width - 1);
+                double v = (j + random_gen()) / (image_height - 1);
                 Ray *r = cam.ray(u, v);
                 color_gen += generate_color(r, rec, scene, maxDepth);
             }
@@ -104,10 +104,21 @@ void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int 
 
 int main() {
     // TODO: Move to Camera Class
-    SceneBuilder sceneBuilder;
-    sceneBuilder.createNewScene();
+    SceneBuilder *sceneBuilder = new SceneBuilder();
+    sceneBuilder->createNewScene();
+
     double aspect_ratio = 16.0 / 9.0;
-    sceneBuilder.setCamera(400, 400 / aspect_ratio, aspect_ratio, 2.0);
+    int image_width = 400;
+    double viewport_height = 2.0;
+    double viewport_width = aspect_ratio * viewport_height;
+    sceneBuilder->setCamera(image_width, static_cast<int>(image_width / aspect_ratio), aspect_ratio,  viewport_height);
+    Math::Point3D origin = Math::Point3D(0, 0, 0);
+    Math::Point3D horizontal = Math::Point3D(viewport_width, 0, 0);
+    Math::Point3D vertical = Math::Point3D(0, viewport_height, 0);
+    Rectangle3D *rect = new Rectangle3D(&origin , &vertical, &horizontal);
+    Camera cam = Camera(&origin, rect);
+    cam.setResolution(image_width, static_cast<int>(image_width / aspect_ratio));
+    sceneBuilder->setCamera(cam);
 
     auto metal = std::make_shared<Metal>(Math::Vector3D(0.8, 0.8, 0.8), 5.0,  0.8, 0.2, 10.0);
     auto mate = std::make_shared<Mate>(Math::Vector3D(0.7, 0.3, 0.3), 5.0,  0.2, 0.1, 10.0);
@@ -116,23 +127,23 @@ int main() {
     auto mate_3 = std::make_shared<Mate>(Math::Vector3D(0.3, 0.3, 0.8), 5.0,  0.2, 0.1, 10.0);
     auto floor = std::make_shared<Mate>(Math::Vector3D(0.8, 0.8, 0.0), 5.0,  0.5, 0.2, 10.0);
 
-    sceneBuilder.add_object( Sphere(new Math::Point3D(-2.0, 0.0, -2.0), 0.5, mate_1));
-    sceneBuilder.add_object( Sphere(new Math::Point3D(-1.0, 0.0, -2.0), 0.5, mate_2));
-    sceneBuilder.add_object( Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
-    sceneBuilder.add_object( Sphere(new Math::Point3D(2.0, 0.0, -2.0), 0.5, mate_1));
-    sceneBuilder.add_object( Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
-    sceneBuilder.add_object( Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
-    sceneBuilder.add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
+    sceneBuilder->add_object(Sphere(new Math::Point3D(-2.0, 0.0, -2.0), 0.5, mate_1));
+    sceneBuilder->add_object(Sphere(new Math::Point3D(-1.0, 0.0, -2.0), 0.5, mate_2));
+    sceneBuilder->add_object(Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
+    sceneBuilder->add_object(Sphere(new Math::Point3D(2.0, 0.0, -2.0), 0.5, mate_1));
+    sceneBuilder->add_object(Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
+    sceneBuilder->add_object(Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
+    sceneBuilder->add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
 
 
     //! Marche pas
     int antialisaing = 100;
     int maxDepth = 50;
 
-    raytracer(  sceneBuilder.getCamera(),
-                sceneBuilder.getScene(),
-                sceneBuilder.getCamera().getWidth(),
-                sceneBuilder.getCamera().getHeight(),
+    raytracer(  sceneBuilder->getCamera(),
+                sceneBuilder->getScene(),
+                sceneBuilder->getCamera().getWidth(),
+                sceneBuilder->getCamera().getHeight(),
                 antialisaing,
                 maxDepth);
     return 0;

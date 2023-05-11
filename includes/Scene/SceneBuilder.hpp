@@ -35,6 +35,10 @@ class SceneBuilder {
         {
             scene = new Scene();
         }
+        void setCamera(Camera cam)
+        {
+            scene->cam = cam;
+        }
         void setCamera(int image_width, int image_height, double aspect_ratio, double viewport_height)
         {
             double viewport_width = aspect_ratio * viewport_height;
@@ -42,8 +46,23 @@ class SceneBuilder {
             Math::Point3D horizontal = Math::Point3D(viewport_width, 0, 0);
             Math::Point3D vertical = Math::Point3D(0, viewport_height, 0);
             Rectangle3D *rect = new Rectangle3D(&origin , &vertical, &horizontal);
-            scene->cam = Camera(&origin, rect);
-            scene->cam.setResolution(image_width, image_height);
+            Camera cam = Camera(&origin, rect);
+            cam.setResolution(image_width, image_height);
+            scene->cam = cam;
+        }
+        void setCamera()
+        {
+            double aspect_ratio = 16.0 / 9.0;
+            int image_width = 400;
+            double viewport_height = 2.0;
+            double viewport_width = aspect_ratio * viewport_height;
+            Math::Point3D origin = Math::Point3D(0, 0, 0);
+            Math::Point3D horizontal = Math::Point3D(viewport_width, 0, 0);
+            Math::Point3D vertical = Math::Point3D(0, viewport_height, 0);
+            Rectangle3D *rect = new Rectangle3D(&origin , &vertical, &horizontal);
+            Camera cam = Camera(&origin, rect);
+            cam.setResolution(image_width, static_cast<int>(image_width / aspect_ratio));
+            scene->cam = cam;
         }
         Camera getCamera()
         {
