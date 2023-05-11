@@ -29,7 +29,7 @@ double random_double(double min, double max) {
 
 Math::Point3D random_in_unit_sphere() {
     while (true) {
-        auto p = Math::Point3D(random_double(-1,1), random_double(-1,1), random_double(-1,1));
+        Math::Point3D p = Math::Point3D(random_double(-1,1), random_double(-1,1), random_double(-1,1));
         if (p.length() >= 1) continue;
         return p;
     }
@@ -47,17 +47,13 @@ Math::Point3D random_in_hemisphere(Math::Point3D& normal) {
 void ppm_output(std::ostream &out, Math::Vector3D pixel_color, int antialisaing) {
     if ((pixel_color.x_coords) >= 0 && ( pixel_color.y_coords) >= 0 && (pixel_color.z_coords) >= 0)
     {
-        auto r = pixel_color.x_coords;
-        auto g = pixel_color.y_coords;
-        auto b = pixel_color.z_coords;
-
-        // Divide the color by the number of samples and gamma-correct for gamma=2.0.
-        auto scale = 1.0 / antialisaing;
+        double r = pixel_color.x_coords;
+        double g = pixel_color.y_coords;
+        double b = pixel_color.z_coords;
+        double scale = 1.0 / antialisaing;
         r = sqrt(scale * r);
         g = sqrt(scale * g);
         b = sqrt(scale * b);
-
-        // Write the translated [0,255] value of each color component.
         std::cout << static_cast<int>(256 * clamp(r, 0.0, 0.999)) << ' '
             << static_cast<int>(256 * clamp(g, 0.0, 0.999)) << ' '
             << static_cast<int>(256 * clamp(b, 0.0, 0.999)) << '\n';
@@ -80,7 +76,7 @@ Math::Point3D generate_color(Ray* r, hit_record* rec, Scene* scene, int maxDepth
         }
     } else {
         Math::Point3D unit_direction = Math::Point3D(r->direction->x_coords, r->direction->y_coords, r->direction->z_coords).unit_vector();
-        auto t = 0.5 * (unit_direction.y_coords + 1.0);
+        double t = 0.5 * (unit_direction.y_coords + 1.0);
         return (1.0 - t) * Math::Point3D(1.0, 1.0, 1.0) + t * Math::Point3D(0.5, 0.7, 1.0);
     }
 }
@@ -95,8 +91,8 @@ void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int 
         {
             color_gen = Math::Point3D {0, 0, 0};
             for (int s = 0; s < antialisaing; ++s) {
-                auto u = (static_cast<double>(i) + random_gen()) / (image_width - 1);
-                auto v = (static_cast<double>(j) + random_gen()) / (image_height - 1);
+                double u = (static_cast<double>(i) + random_gen()) / (image_width - 1);
+                double v = (static_cast<double>(j) + random_gen()) / (image_height - 1);
                 Ray *r = cam.ray(u, v);
                 color_gen += generate_color(r, rec, scene, maxDepth);
             }
@@ -120,7 +116,7 @@ int main() {
     Camera cam = Camera(&origin, rect);
 
     Scene *scene = new Scene();
-    auto metal = std::make_shared<Metal>(Math::Vector3D(0.8, 0.8, 0.8), 5.0,  0.8, 0.2, 10.0);
+    Metal metal = std::make_shared<Metal>(Math::Vector3D(0.8, 0.8, 0.8), 5.0,  0.8, 0.2, 10.0);
     auto mate = std::make_shared<Mate>(Math::Vector3D(0.7, 0.3, 0.3), 5.0,  0.2, 0.1, 10.0);
     auto mate_1 = std::make_shared<Mate>(Math::Vector3D(0.5, 0.6, 0.3), 5.0,  0.2, 0.1, 10.0);
     auto mate_2 = std::make_shared<Mate>(Math::Vector3D(0.6, 0.3, 0.6), 5.0,  0.2, 0.1, 10.0);

@@ -31,7 +31,7 @@ class Scene {
             bool hit_anything = false;
             double temp_t_max = t_max;
 
-            for (const auto& object : object_list) {
+            for (const std::shared_ptr<IObject>& object : object_list) {
                 if (object->hits(r, t_min, temp_t_max, temp_rec)) {
                     hit_anything = true;
                     temp_t_max = temp_rec.t;
