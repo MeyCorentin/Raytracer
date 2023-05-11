@@ -41,11 +41,6 @@ class Scene {
 
             return hit_anything;
         }
-        template<class T>
-        void add_object(T object)
-        {
-            object_list.push_back(std::make_shared<T>(object));
-        }
         std::vector<std::shared_ptr<IObject>> object_list;
 
     protected:

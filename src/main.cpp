@@ -7,7 +7,7 @@
 #include "Objects/Shapes/Triangle3D.hpp"
 #include "Objects/Shapes/Cone.hpp"
 #include "Objects/Shapes/Plane.hpp"
-#include "Scene.hpp"
+#include "Scene/SceneBuilder.hpp"
 #include "Camera/Camera.hpp"
 
 double clamp(double x, double min, double max) {
@@ -104,6 +104,8 @@ void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int 
 
 int main() {
     // TODO: Move to Camera Class
+    SceneBuilder sceneBuilder;
+    sceneBuilder.createNewScene();
     double aspect_ratio = 16.0 / 9.0;
     int image_width = 400;
     int image_height = static_cast<int>(image_width / aspect_ratio);
@@ -115,27 +117,26 @@ int main() {
     Rectangle3D *rect = new Rectangle3D(&origin , &vertical, &horizontal);
     Camera cam = Camera(&origin, rect);
 
-    Scene *scene = new Scene();
-    Metal metal = std::make_shared<Metal>(Math::Vector3D(0.8, 0.8, 0.8), 5.0,  0.8, 0.2, 10.0);
+    auto metal = std::make_shared<Metal>(Math::Vector3D(0.8, 0.8, 0.8), 5.0,  0.8, 0.2, 10.0);
     auto mate = std::make_shared<Mate>(Math::Vector3D(0.7, 0.3, 0.3), 5.0,  0.2, 0.1, 10.0);
     auto mate_1 = std::make_shared<Mate>(Math::Vector3D(0.5, 0.6, 0.3), 5.0,  0.2, 0.1, 10.0);
     auto mate_2 = std::make_shared<Mate>(Math::Vector3D(0.6, 0.3, 0.6), 5.0,  0.2, 0.1, 10.0);
     auto mate_3 = std::make_shared<Mate>(Math::Vector3D(0.3, 0.3, 0.8), 5.0,  0.2, 0.1, 10.0);
     auto floor = std::make_shared<Mate>(Math::Vector3D(0.8, 0.8, 0.0), 5.0,  0.5, 0.2, 10.0);
 
-    scene->add_object( Sphere(new Math::Point3D(-2.0, 0.0, -2.0), 0.5, mate_1));
-    scene->add_object( Sphere(new Math::Point3D(-1.0, 0.0, -2.0), 0.5, mate_2));
-    scene->add_object( Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
-    scene->add_object( Sphere(new Math::Point3D(2.0, 0.0, -2.0), 0.5, mate_1));
-    scene->add_object( Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
-    scene->add_object( Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
-    scene->add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
+    sceneBuilder.add_object( Sphere(new Math::Point3D(-2.0, 0.0, -2.0), 0.5, mate_1));
+    sceneBuilder.add_object( Sphere(new Math::Point3D(-1.0, 0.0, -2.0), 0.5, mate_2));
+    sceneBuilder.add_object( Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
+    sceneBuilder.add_object( Sphere(new Math::Point3D(2.0, 0.0, -2.0), 0.5, mate_1));
+    sceneBuilder.add_object( Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
+    sceneBuilder.add_object( Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
+    sceneBuilder.add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
 
 
     //! Marche pas
     int antialisaing = 100;
     int maxDepth = 50;
 
-    raytracer(cam, scene, image_width, image_height, antialisaing, maxDepth);
+    raytracer(cam, sceneBuilder.getScene(), image_width, image_height, antialisaing, maxDepth);
     return 0;
 }
