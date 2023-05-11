@@ -11,6 +11,7 @@
 #include <vector>
 #include <memory>
 #include "interface/IObject.hpp"
+#include "interface/ILight.hpp"
 #include"Objects/Shapes/Sphere.hpp"
 #include "Objects/Shapes/hit_record.hpp"
 
@@ -31,8 +32,13 @@ class Scene {
             bool hit_anything = false;
             double temp_t_max = t_max;
 
-            for (const std::shared_ptr<IObject>& object : object_list) {
+            for (const std::shared_ptr<IObject>& object : object_list)
+            {
                 if (object->hits(r, t_min, temp_t_max, temp_rec)) {
+                    for (const std::shared_ptr<ILight>& light: light_list)
+                    {
+                        light->computeLight(temp_rec, object, object_list);
+                    }
                     hit_anything = true;
                     temp_t_max = temp_rec.t;
                     rec = temp_rec;
@@ -42,6 +48,7 @@ class Scene {
             return hit_anything;
         }
         std::vector<std::shared_ptr<IObject>> object_list;
+        std::vector<std::shared_ptr<ILight>> light_list;
         Camera cam;
 
     protected:

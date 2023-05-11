@@ -73,6 +73,11 @@ class SceneBuilder {
         {
             scene->object_list.push_back(std::make_shared<T>(object));
         }
+        template<class T>
+        void add_light(T object)
+        {
+            scene->light_list.push_back(std::make_shared<T>(object));
+        }
 
     protected:
     private:

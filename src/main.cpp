@@ -9,6 +9,7 @@
 #include "Objects/Shapes/Plane.hpp"
 #include "Scene/SceneBuilder.hpp"
 #include "Camera/Camera.hpp"
+#include "Light/DirectionalLight.hpp"
 
 double clamp(double x, double min, double max) {
     if (x < min) return min;
@@ -61,24 +62,22 @@ void ppm_output(std::ostream &out, Math::Vector3D pixel_color, int antialisaing)
 }
 
 Math::Point3D generate_color(Ray* r, hit_record* rec, Scene* scene, int maxDepth) {
-    if (maxDepth <= 0) {
-        return Math::Point3D(0, 0, 0);
-    }
 
-    if (scene->hit_global(*r, 0.001, INFINITY, *rec)) {
-        Ray reflection;
-        Math::Vector3D attenuation;
-        if (rec->mat->rebound(*r, *rec, reflection, attenuation)) {
-            Ray *temp = &reflection;
-            return Math::Point3D{attenuation.x_coords, attenuation.y_coords, attenuation.z_coords} *  generate_color(temp, rec, scene, maxDepth - 1);
-        } else {
-            return Math::Point3D(0, 0, 0);
-        }
-    } else {
+    Ray reflection;
+    Math::Vector3D attenuation;
+
+    if (maxDepth <= 0)
+        return Math::Point3D(0, 0, 0);
+    if (!scene->hit_global(*r, 0.001, INFINITY, *rec))
+    {
         Math::Point3D unit_direction = Math::Point3D(r->direction->x_coords, r->direction->y_coords, r->direction->z_coords).unit_vector();
         double t = 0.5 * (unit_direction.y_coords + 1.0);
         return (1.0 - t) * Math::Point3D(1.0, 1.0, 1.0) + t * Math::Point3D(0.5, 0.7, 1.0);
     }
+    if (!rec->mat->rebound(*r, *rec, reflection, attenuation))
+        return Math::Point3D(0, 0, 0);
+    return Math::Point3D{attenuation.x_coords, attenuation.y_coords, attenuation.z_coords} *  generate_color(&reflection, rec, scene, maxDepth - 1);
+
 }
 
 void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int antialisaing, int maxDepth)
@@ -134,7 +133,9 @@ int main() {
     sceneBuilder->add_object(Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
     sceneBuilder->add_object(Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
     sceneBuilder->add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
-
+    sceneBuilder->add_light(DLight(new Math::Vector3D(0.0, 0.0, 0.0), new Math::Vector3D(0.0, 0.0, 0.0), 100.0));
+    sceneBuilder->add_light(DLight(new Math::Vector3D(0.0, 0.0, 0.0), new Math::Vector3D(0.0, 0.0, 0.0), 100.0));
+    sceneBuilder->add_light(DLight(new Math::Vector3D(0.0, 0.0, 0.0), new Math::Vector3D(0.0, 0.0, 0.0), 100.0));
 
     //! Marche pas
     int antialisaing = 100;
