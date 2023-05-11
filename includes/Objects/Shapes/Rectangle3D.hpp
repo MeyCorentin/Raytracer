@@ -5,17 +5,12 @@
 ** Rectangle3D
 */
 
-#ifndef Rectangle3D_HPP
-#define Rectangle3D_HPP
+#pragma once
 
-class Ray;
-class IShape;
-class Point3D;
-class Vector3D;
+#include "Camera/Ray.hpp"
+#include "interface/IShape.hpp"
 
-namespace Shape
-{
-    class Rectangle3D {
+class Rectangle3D {
     public:
         Math::Point3D *origin;
         Math::Point3D *bottom_side;
@@ -31,5 +26,4 @@ namespace Shape
     protected:
     private:
 };
-}
-#endif /* !Rectangle3D */
+

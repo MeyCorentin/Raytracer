@@ -5,23 +5,18 @@
 ** IShape
 */
 
-#ifndef IShape_HPP
-    #define IShape_HPP
+#pragma once
 
-namespace Shape
-{
-    class hit_record;
-}
-class IObject;
-class Ray;
+#include "Camera/Ray.hpp"
+#include "Objects/Shapes/hit_record.hpp"
+#include "interface/IObject.hpp"
 
 class IShape: public IObject {
     public:
         virtual ~IShape() = default;
-        virtual bool hits(const Ray& r, double t_min, double t_max, Shape::hit_record& rec) = 0;
+        virtual bool hits(const Ray& r, double t_min, double t_max,  hit_record &rec) = 0;
 
     protected:
     private:
 };
 
-#endif /* !IShape */

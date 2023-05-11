@@ -5,10 +5,9 @@
 ** SpotLight
 */
 
-#ifndef SpotLight_HPP
-    #define SpotLight_HPP
 
-#include "../interface/ILight.hpp"
+#pragma once
+#include "interface/ILight.hpp"
 
 class SpotLight: public ILight {
     public:
@@ -19,4 +18,3 @@ class SpotLight: public ILight {
     private:
 };
 
-#endif /* !SpotLight */

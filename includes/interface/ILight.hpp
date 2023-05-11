@@ -5,11 +5,8 @@
 ** ILight
 */
 
-#ifndef ILight_HPP
-    #define ILight_HPP
-
+#pragma once
 #include "IObject.hpp"
-
 class ILight: public IObject {
     public:
         ~ILight() = default;
@@ -18,4 +15,3 @@ class ILight: public IObject {
     private:
 };
 
-#endif /* !ILight */

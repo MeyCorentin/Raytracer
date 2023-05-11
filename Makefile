@@ -8,7 +8,15 @@
 PP = g++
 CC = gcc
 
-clean = src/main.o	\
+SRC = src/main.cpp	\
+		src/Math/Math.cpp \
+		src/Material/Metal.cpp \
+		src/Material/Mate.cpp \
+		src/Material/Material.cpp \
+		src/Objects/Shapes/hit_record.cpp \
+
+clean = *.o
+
 
 NAME = raytracer
 
@@ -16,7 +24,7 @@ ${NAME}:
 	@echo 'Files compiled'
 
 all : ${NAME}
-	@${PP} -o ${NAME} src/main.cpp -Iinclude -std=c++20 -Wall -g3
+	@${PP} -o ${NAME} ${SRC} -Iincludes -std=c++20 -Wall -g3
 
 clean :
 	@rm -rf ${clean}

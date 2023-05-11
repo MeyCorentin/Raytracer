@@ -5,11 +5,9 @@
 ** PointLight
 */
 
-#ifndef PointLight_HPP
-    #define PointLight_HPP
 
-#include "../interface/ILight.hpp"
-
+#pragma once
+#include "interface/ILight.hpp"
 class PointLight: public ILight {
     public:
         PointLight();
@@ -19,4 +17,3 @@ class PointLight: public ILight {
     private:
 };
 
-#endif /* !PointLight */

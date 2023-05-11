@@ -5,8 +5,8 @@
 ** ITexture
 */
 
-#ifndef ITexture_HPP
-    #define ITexture_HPP
+
+#pragma once
 
 class ITexture {
     public:
@@ -15,5 +15,3 @@ class ITexture {
     protected:
     private:
 };
-
-#endif /* !ITexture */

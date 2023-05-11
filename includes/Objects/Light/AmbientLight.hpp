@@ -5,10 +5,9 @@
 ** AmbientLight
 */
 
-#ifndef AmbientLight_HPP
-    #define AmbientLight_HPP
 
-#include "../interface/ILight.hpp"
+#pragma once
+#include "interface/ILight.hpp"
 
 class AmbientLight: public ILight {
     public:
@@ -19,4 +18,3 @@ class AmbientLight: public ILight {
     private:
 };
 
-#endif /* !AmbientLight */

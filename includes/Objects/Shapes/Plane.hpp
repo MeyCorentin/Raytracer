@@ -5,21 +5,16 @@
 ** Plane
 */
 
-#ifndef Plane_HPP
-#define Plane_HPP
 
-class IShape;
+#pragma once
 
-namespace Shape
-{
-    class Plane: public IShape {
-        public:
-            Plane() {};
-            ~Plane() {};
+#include "interface/IShape.hpp"
 
-        protected:
-        private:
-    };
-}
+class Plane: public IShape {
+    public:
+        Plane() {};
+        ~Plane() {};
 
-#endif /* !Plane */
+    protected:
+    private:
+};

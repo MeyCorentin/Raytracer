@@ -4,17 +4,13 @@
 ** File description:
 ** Vector3D
 */
-
-#ifndef Vector3D_HPP
-#define Vector3D_HPP
-
+#pragma once
 
 #include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
 #include <cmath>
-#include "Point3D.hpp"
 
 namespace Math
 {
@@ -102,29 +98,5 @@ namespace Math
         protected:
         private:
     };
-    double dot(const Vector3D u, const Vector3D* v) {
-        return u.x_coords * v->x_coords + u.y_coords * v->y_coords + u.z_coords * v->z_coords;
-    }
-    double dot(const Vector3D* u, const Vector3D* v) {
-        return u->x_coords * v->x_coords + u->y_coords * v->y_coords + u->z_coords * v->z_coords;
-    }
-    double dot(const Vector3D &u, const Vector3D &v) {
-        return u.x_coords * v.x_coords + u.y_coords * v.y_coords + u.z_coords * v.z_coords;
-    }
-    double dot(Vector3D &u, Vector3D &v) {
-        return u.x_coords * v.x_coords + u.y_coords * v.y_coords + u.z_coords * v.z_coords;
-    }
-    Vector3D operator+(const Vector3D &u, const Vector3D &v) {
-        return Vector3D(u.x_coords + v.x_coords, u.y_coords + v.y_coords, u.z_coords + v.z_coords);
-    }
-    Vector3D operator*(double scalar, const Vector3D& v) {
-        return Vector3D(v.x_coords * scalar, v.y_coords * scalar, v.z_coords * scalar);
-    }
-
-    Vector3D operator-(const Vector3D &u, const Vector3D &v) {
-        return Vector3D(u.x_coords - v.x_coords, u.y_coords - v.y_coords, u.z_coords - v.z_coords);
-    }
 }
 
-
-#endif /* !Vector3D */

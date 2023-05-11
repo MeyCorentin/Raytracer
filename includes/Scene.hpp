@@ -5,24 +5,21 @@
 ** Scene
 */
 
-#ifndef Scene_HPP
-    #define Scene_HPP
+
+#pragma once
 
 #include <vector>
 #include <memory>
 #include "interface/IObject.hpp"
-
-namespace Shape
-{
-    class Sphere;
-}
+#include"Objects/Shapes/Sphere.hpp"
+#include "Objects/Shapes/hit_record.hpp"
 
 class Scene {
     public:
         Scene() {};
         ~Scene() {};
-        bool hit_global(const Ray& r, double t_min, double t_max, Shape::hit_record& rec) {
-            Shape::hit_record temp_rec;
+        bool hit_global(const Ray& r, double t_min, double t_max, hit_record& rec) {
+            hit_record temp_rec;
             bool hit_anything = false;
             double temp_t_max = t_max;
 
@@ -36,9 +33,9 @@ class Scene {
 
             return hit_anything;
         }
-        void add_sphere(Shape::Sphere new_object)
+        void add_sphere( Sphere new_object)
         {
-            object_list.push_back(std::make_shared<Shape::Sphere>(new_object));
+            object_list.push_back(std::make_shared< Sphere>(new_object));
         }
         std::vector<std::shared_ptr<IObject>> object_list;
 
@@ -46,4 +43,3 @@ class Scene {
     private:
 };
 
-#endif /* !Scene */

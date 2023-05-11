@@ -5,15 +5,14 @@
 ** Point3D
 */
 
-#ifndef Point3D_HPP
-#define Point3D_HPP
+#pragma once
 
 #include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
 #include <cmath>
-#include "Vector3D.hpp"
+#include "Math/Vector3D.hpp"
 
 namespace Math
 {
@@ -91,16 +90,13 @@ namespace Math
             Point3D operator/=(double t) {
                 return *this *= 1/t;
             }
-            double length() const {
-                return sqrt(length_squared());
-            }
 
-            double length_squared() const {
+            double length() const {
                 return x_coords*x_coords + y_coords*y_coords + z_coords*z_coords;
             }
             Point3D unit_vector()
             {
-                return Point3D(this->x_coords / this->length(), this->y_coords / this->length(), this->z_coords / this->length());
+                return Point3D(this->x_coords / sqrt(this->length()), this->y_coords / sqrt(this->length()), this->z_coords / sqrt(this->length()));
             }
             double x_coords;
             double y_coords;
@@ -109,34 +105,4 @@ namespace Math
         protected:
         private:
     };
-    Point3D operator*(const Point3D &u, const Point3D &v) {
-        return Point3D(u.x_coords * v.x_coords, u.y_coords * v.y_coords, u.z_coords * v.z_coords);
-    }
-
-    Point3D operator*(double t, const Point3D &v) {
-        return Point3D(t*v.x_coords, t*v.y_coords, t*v.z_coords);
-    }
-    Point3D operator*(const Point3D &v, double t) {
-        return t * v;
-    }
-    Point3D operator/(Point3D v, double t) {
-        return (1/t) * v;
-    }
-    Point3D operator+(const Point3D &u, const Point3D &v) {
-        return Point3D(u.x_coords + v.x_coords, u.y_coords + v.y_coords, u.z_coords + v.z_coords);
-    }
-    Point3D operator+(const Point3D &u, const Vector3D &v) {
-        return Point3D(u.x_coords + v.x_coords, u.y_coords + v.y_coords, u.z_coords + v.z_coords);
-    }
-    Point3D operator-(const Point3D &u, const Point3D &v) {
-        return Point3D(u.x_coords - v.x_coords, u.y_coords - v.y_coords, u.z_coords - v.z_coords);
-    }
-    Point3D operator-(Math::Point3D *const u, const Math::Point3D v) {
-        return Point3D(u->x_coords - v.x_coords, u->y_coords - v.y_coords, u->z_coords - v.z_coords);
-    }
-    Point3D operator-(Math::Point3D u,  Math::Point3D *v) {
-        return Point3D(u.x_coords - v->x_coords, u.y_coords - v->y_coords, u.z_coords - v->z_coords);
-    }
 }
-
-#endif /* !Point3D */
