@@ -28,11 +28,12 @@ class Sphere: public IShape {
         ~Sphere() {};
         bool hits(const Ray& r, double t_min, double t_max, hit_record& rec) {
             Math::Point3D sphere_color(0.8, 0.8, 0.0);
-            Math::Vector3D temp = Math::Vector3D(origin->x_coords, origin->y_coords, origin->z_coords);
-            Math::Vector3D oc = Math::Vector3D(r.origin->x_coords, r.origin->y_coords, r.origin->z_coords) - temp;
-            double a = dot(r.direction, r.direction);
-            double b = 2.0 * dot(&oc, r.direction);
-            double c = dot(&oc, &oc) - radius * radius;
+            Math::Vector3D temp_1 = PointToVec(*r.origin);
+            Math::Vector3D temp_2 = PointToVec(*origin);
+            Math::Vector3D oc = temp_1 - temp_2;
+            double a = dot(*r.direction, *r.direction);
+            double b = 2.0 * dot(oc, *r.direction);
+            double c = dot(oc, oc) - radius * radius;
             double discriminant = b*b - 4*a*c;
 
             if (discriminant >= 0) {
@@ -41,16 +42,16 @@ class Sphere: public IShape {
 
                 if (t1 < t_max && t1 > t_min) {
                     rec.t = t1;
-                    Math::Point3D intersection_point = r.at(t1);
-                    Math::Point3D normal = (intersection_point - origin) / radius;
+                    rec.intersection = r.at(t1);
+                    Math::Point3D normal = (rec.intersection - *origin) / radius;
                     Math::Point3D shading_color = 0.5 * (normal + Math::Vector3D(1,1,1));
                     rec.normal =  sphere_color * shading_color;
                     rec.mat = this->mat;
                     return true;
                 } else if (t2 < t_max && t2 > t_min) {
                     rec.t = t2;
-                    Math::Point3D intersection_point = r.at(t2);
-                    Math::Point3D normal = (intersection_point - origin) / radius;
+                    rec.intersection = r.at(t2);
+                    Math::Point3D normal = (rec.intersection - *origin) / radius;
                     Math::Point3D shading_color = 0.5 * (normal + Math::Vector3D(1,1,1));
                     rec.normal =  sphere_color * shading_color;
                     rec.mat = this->mat;
@@ -59,9 +60,17 @@ class Sphere: public IShape {
             }
             return false;
         }
+        std::shared_ptr<Material> getMat()
+        {
+            return mat;
+        }
+        Math::Point3D *getOrigin()
+        {
+            return origin;
+        }
+        std::shared_ptr<Material> mat;
         Math::Point3D *origin;
         double radius;
-        std::shared_ptr<Material> mat;
 
     protected:
     private:

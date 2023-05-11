@@ -15,6 +15,7 @@ class IShape: public IObject {
     public:
         virtual ~IShape() = default;
         virtual bool hits(const Ray& r, double t_min, double t_max,  hit_record &rec) = 0;
+        virtual std::shared_ptr<Material> getMat() = 0;
 
     protected:
     private:

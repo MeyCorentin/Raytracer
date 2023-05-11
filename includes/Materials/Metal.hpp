@@ -17,6 +17,7 @@ class Metal: public Material {
         ~Metal();
         Metal(Math::Vector3D value);
         Metal(Math::Vector3D value, double kd, double ks, double ka, double n);
+        Math::Vector3D getValue();
         bool rebound(Ray ray,  hit_record hit, Ray &reflection ,Math::Vector3D &attenuation);
         Math::Vector3D  reflect(const Math::Vector3D *v, const Math::Vector3D n);
         Math::Vector3D value;

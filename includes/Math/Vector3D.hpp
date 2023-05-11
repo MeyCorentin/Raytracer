@@ -88,7 +88,9 @@ namespace Math
                 }
                 Vector3D unit_vector()
                 {
-                    return Vector3D(this->x_coords / this->length(), this->y_coords / this->length(), this->z_coords / this->length());
+                    if (this->length() > 0)
+                        return Vector3D(this->x_coords / this->length(), this->y_coords / this->length(), this->z_coords / this->length());
+                    return *this;
                 }
                 // Return the dot of two vector
                 double dot_v(Vector3D *other)

@@ -13,6 +13,10 @@ class IObject {
     public:
         virtual ~IObject() = default;
         virtual bool hits(const Ray& r, double t_min, double t_max,  hit_record &rec) = 0;
+        virtual std::shared_ptr<Material> getMat() = 0;
+        virtual Math::Point3D *getOrigin() = 0;
+        std::shared_ptr<Material> mat;
+        Math::Point3D *origin;
 
     protected:
     private:

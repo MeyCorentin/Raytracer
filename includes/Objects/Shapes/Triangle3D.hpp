@@ -47,33 +47,33 @@ class Triangle3D : public IShape {
                 Math::Vector3D V1 = BC - AB;
                 Math::Vector3D V2 = CA - AB;
                 Math::Vector3D pvec = dirRef.cross(V2);
-                double det = dot(&V1, &pvec);
+                double det = dot(V1, pvec);
                 // si parallèle a determinant false
                 if (det > -EPSILON && det < EPSILON)
                     return false;
                 double invDet = 1 / det;
                 Math::Vector3D tvec(oRef.x_coords - _origin->x_coords, oRef.y_coords - _origin->y_coords, oRef.z_coords - _origin->z_coords);
-                double u = dot(&tvec, &pvec) * invDet;
+                double u = dot(tvec, pvec) * invDet;
                 //check intersection
                 if (u < 0 || u > 1)
                     return false;
                 Math::Vector3D qvec = tvec.cross(V1);
-                double v = dot(&dirRef, &qvec) * invDet;
+                double v = dot(dirRef, qvec) * invDet;
                 // check si intersection dans le triangle
                 if (v < 0.0 || u + v > 1.0)
                     return false;
-                double t = dot(&V2, &qvec) * invDet;
+                double t = dot(V2, qvec) * invDet;
                 if (t > EPSILON) {
                     rec.t = t;
                     Math::Point3D p = r.at(t);
-                    Math::Point3D normal = p - _origin;
+                    Math::Point3D normal = p - *_origin;
                     Math::Point3D shading_color = 0.5 * (normal + Math::Vector3D(1, 1, 1));
                     rec.normal = triangle_color * shading_color;
                     return true;
                 }
                 Math::Vector3D normalv = V1.cross(V2);
                 Math::Vector3D denom = normalv.cross(normalv);
-                double ndotRayDir = dot(&normalv, &dirRef);
+                double ndotRayDir = dot(normalv, dirRef);
                 // check par rapport a normal si parallele
                 if (fabs(ndotRayDir) < EPSILON)
                     return false;

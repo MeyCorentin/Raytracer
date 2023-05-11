@@ -10,6 +10,7 @@
 #include "Scene/SceneBuilder.hpp"
 #include "Camera/Camera.hpp"
 #include "Light/DirectionalLight.hpp"
+#include "Light/AmbientLight.hpp"
 
 double clamp(double x, double min, double max) {
     if (x < min) return min;
@@ -68,7 +69,7 @@ Math::Point3D generate_color(Ray* r, hit_record* rec, Scene* scene, int maxDepth
 
     if (maxDepth <= 0)
         return Math::Point3D(0, 0, 0);
-    if (!scene->hit_global(*r, 0.001, INFINITY, *rec))
+    if (!scene->hit_global(*r, 0.001, INFINITY, *rec, false))
     {
         Math::Point3D unit_direction = Math::Point3D(r->direction->x_coords, r->direction->y_coords, r->direction->z_coords).unit_vector();
         double t = 0.5 * (unit_direction.y_coords + 1.0);
@@ -76,7 +77,7 @@ Math::Point3D generate_color(Ray* r, hit_record* rec, Scene* scene, int maxDepth
     }
     if (!rec->mat->rebound(*r, *rec, reflection, attenuation))
         return Math::Point3D(0, 0, 0);
-    return Math::Point3D{attenuation.x_coords, attenuation.y_coords, attenuation.z_coords} *  generate_color(&reflection, rec, scene, maxDepth - 1);
+    return rec->light_result;
 
 }
 
@@ -126,16 +127,19 @@ int main() {
     auto mate_3 = std::make_shared<Mate>(Math::Vector3D(0.3, 0.3, 0.8), 5.0,  0.2, 0.1, 10.0);
     auto floor = std::make_shared<Mate>(Math::Vector3D(0.8, 0.8, 0.0), 5.0,  0.5, 0.2, 10.0);
 
+    sceneBuilder->add_object(Sphere(new Math::Point3D(0.0, -100.5, -2.0), 100, mate_1));
     sceneBuilder->add_object(Sphere(new Math::Point3D(-2.0, 0.0, -2.0), 0.5, mate_1));
     sceneBuilder->add_object(Sphere(new Math::Point3D(-1.0, 0.0, -2.0), 0.5, mate_2));
     sceneBuilder->add_object(Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
     sceneBuilder->add_object(Sphere(new Math::Point3D(2.0, 0.0, -2.0), 0.5, mate_1));
     sceneBuilder->add_object(Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
-    sceneBuilder->add_object(Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
-    sceneBuilder->add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
-    sceneBuilder->add_light(DLight(new Math::Vector3D(0.0, 0.0, 0.0), new Math::Vector3D(0.0, 0.0, 0.0), 100.0));
-    sceneBuilder->add_light(DLight(new Math::Vector3D(0.0, 0.0, 0.0), new Math::Vector3D(0.0, 0.0, 0.0), 100.0));
-    sceneBuilder->add_light(DLight(new Math::Vector3D(0.0, 0.0, 0.0), new Math::Vector3D(0.0, 0.0, 0.0), 100.0));
+    // sceneBuilder->add_object(Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
+    // sceneBuilder->add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
+
+
+    sceneBuilder->add_light(DLight(new Math::Vector3D(-7.0, -10.0, -2.0), Math::Vector3D(0.5, 0.5, 0.5), 10));
+    //* Alight : Intensity comprise entre 0 et 1;
+    // sceneBuilder->add_light(ALight(Math::Vector3D(0.5, 0.5, 0.5), 0.5));
 
     //! Marche pas
     int antialisaing = 100;

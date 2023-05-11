@@ -15,6 +15,7 @@ class Material {
     public:
         virtual ~Material() = default;
         virtual bool rebound(Ray ray,  hit_record hit, Ray &reflection ,Math::Vector3D &attenuation) = 0;
+        virtual Math::Vector3D getValue() = 0;
         Math::Vector3D value;
         double kd;
         double ks;

@@ -8,6 +8,7 @@
 
 #pragma once
 #include "interface/ILight.hpp"
+#include "Scene/Scene.hpp"
 
 class Slight: public ILight {
     //Spot Light
@@ -15,9 +16,15 @@ class Slight: public ILight {
         Slight();
         ~Slight();
 
-        bool computeLight(hit_record &temp_rec, const std::shared_ptr<IObject>& object, std::vector<std::shared_ptr<IObject>> object_list)
+        bool computeLight(
+            Scene &scene,
+            const Ray& r,
+            hit_record &temp_rec,
+            const std::shared_ptr<IObject>& object,
+            std::vector<std::shared_ptr<IObject>> object_list
+            )
         {
-
+            return true;
         }
     protected:
     private:

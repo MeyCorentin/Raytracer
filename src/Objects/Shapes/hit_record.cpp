@@ -15,4 +15,5 @@ hit_record::~hit_record()
 };
 
 hit_record::hit_record() {
+    light_result = Math::Point3D(0.0, 0.0, 0.0);
 };
