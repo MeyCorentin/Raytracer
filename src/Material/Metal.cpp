@@ -9,17 +9,9 @@
 
 Metal::~Metal() {};
 
-Metal::Metal(Math::Vector3D value, double kd, double ks, double ka, double n) {
-    this->value = value;
-    this->kd = kd;
-    this->ks = ks;
-    this->ka = ka;
-    this->n = n;
-}
 Metal::Metal(Math::Vector3D value) {
     this->value = value;
 }
-
 
 bool Metal::rebound(Ray ray,  hit_record hit, Ray &reflection ,Math::Vector3D &attenuation) {
     Math::Vector3D unit_direction = ray.direction->unit_vector();

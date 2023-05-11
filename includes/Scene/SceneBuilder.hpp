@@ -21,10 +21,9 @@ namespace Shape
 }
 
 class SceneBuilder {
-    protected:
-        Scene *scene;
 
     public:
+        Scene *scene;
         SceneBuilder() {};
         ~SceneBuilder() {};
         Scene *getScene()
@@ -35,7 +34,7 @@ class SceneBuilder {
         {
             scene = new Scene();
         }
-        void setCamera(Camera cam)
+        void setCamera(Camera *cam)
         {
             scene->cam = cam;
         }
@@ -46,27 +45,12 @@ class SceneBuilder {
             Math::Point3D horizontal = Math::Point3D(viewport_width, 0, 0);
             Math::Point3D vertical = Math::Point3D(0, viewport_height, 0);
             Rectangle3D *rect = new Rectangle3D(&origin , &vertical, &horizontal);
-            Camera cam = Camera(&origin, rect);
-            cam.setResolution(image_width, image_height);
-            scene->cam = cam;
+            scene->cam = new Camera(&origin, rect);
+            scene->cam->setResolution(image_width, image_height);
         }
-        void setCamera()
+        Camera *getCamera()
         {
-            double aspect_ratio = 16.0 / 9.0;
-            int image_width = 400;
-            double viewport_height = 2.0;
-            double viewport_width = aspect_ratio * viewport_height;
-            Math::Point3D origin = Math::Point3D(0, 0, 0);
-            Math::Point3D horizontal = Math::Point3D(viewport_width, 0, 0);
-            Math::Point3D vertical = Math::Point3D(0, viewport_height, 0);
-            Rectangle3D *rect = new Rectangle3D(&origin , &vertical, &horizontal);
-            Camera cam = Camera(&origin, rect);
-            cam.setResolution(image_width, static_cast<int>(image_width / aspect_ratio));
-            scene->cam = cam;
-        }
-        Camera getCamera()
-        {
-            return scene->cam;
+            return scene->getCam();
         }
         template<class T>
         void add_object(T object)

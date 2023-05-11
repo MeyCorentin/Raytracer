@@ -41,7 +41,7 @@ class DLight: public ILight {
                     light_intensity = static_cast<double>(this->intensity);
             double light_power = std::max(dot(normal, direction_light), 0.0) * light_intensity;
             Math::Vector3D light_reflected = mat_value / M_PI;
-            Math::Vector3D temp_result = mat_value * this->color  * (std::max(dot(normal, direction_light), 0.0) * light_intensity);
+            Math::Vector3D temp_result = mat_value * this->color  * light_power;
             Math::Vector3D result =  temp_result * light_reflected;
             temp_rec.light_result = Math::VecToPoint(result);
             return true;

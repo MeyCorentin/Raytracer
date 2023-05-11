@@ -32,8 +32,8 @@ double random_double(double min, double max) {
 Math::Point3D random_in_unit_sphere() {
     while (true) {
         Math::Point3D p = Math::Point3D(random_double(-1,1), random_double(-1,1), random_double(-1,1));
-        if (p.length() >= 1) continue;
-        return p;
+        if (p.length() < 1)
+            return p;
     }
 }
 
@@ -41,8 +41,7 @@ Math::Point3D random_in_hemisphere(Math::Point3D& normal) {
     Math::Point3D in_unit_sphere = random_in_unit_sphere();
     if (in_unit_sphere.dot_p(&normal) > 0.0)
         return in_unit_sphere;
-    else
-        return -in_unit_sphere;
+    return -in_unit_sphere;
 }
 
 
@@ -71,7 +70,7 @@ Math::Point3D generate_color(Ray* r, hit_record* rec, Scene* scene, int maxDepth
         return Math::Point3D(0, 0, 0);
     if (!scene->hit_global(*r, 0.001, INFINITY, *rec, false))
     {
-        Math::Point3D unit_direction = Math::Point3D(r->direction->x_coords, r->direction->y_coords, r->direction->z_coords).unit_vector();
+        Math::Point3D unit_direction = Math::VecToPoint(*r->direction).unit_vector();
         double t = 0.5 * (unit_direction.y_coords + 1.0);
         return (1.0 - t) * Math::Point3D(1.0, 1.0, 1.0) + t * Math::Point3D(0.5, 0.7, 1.0);
     }
@@ -83,8 +82,9 @@ Math::Point3D generate_color(Ray* r, hit_record* rec, Scene* scene, int maxDepth
 
 void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int antialisaing, int maxDepth)
 {
-    Math::Point3D color_gen = Math::Point3D {0, 0, 0};
-    hit_record *rec = new  hit_record();
+    hit_record *rec = new hit_record();
+    Math::Point3D color_gen;
+
     std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
     for (double j = image_height - 1; j >= 0; --j) {
         for (double i = 0; i < image_width; ++i)
@@ -111,21 +111,20 @@ int main() {
     int image_width = 400;
     double viewport_height = 2.0;
     double viewport_width = aspect_ratio * viewport_height;
-    sceneBuilder->setCamera(image_width, static_cast<int>(image_width / aspect_ratio), aspect_ratio,  viewport_height);
     Math::Point3D origin = Math::Point3D(0, 0, 0);
     Math::Point3D horizontal = Math::Point3D(viewport_width, 0, 0);
     Math::Point3D vertical = Math::Point3D(0, viewport_height, 0);
     Rectangle3D *rect = new Rectangle3D(&origin , &vertical, &horizontal);
-    Camera cam = Camera(&origin, rect);
-    cam.setResolution(image_width, static_cast<int>(image_width / aspect_ratio));
+    Camera *cam = new Camera(&origin, rect);
     sceneBuilder->setCamera(cam);
+    sceneBuilder->getCamera()->setResolution(image_width, (image_width / aspect_ratio));
 
-    auto metal = std::make_shared<Metal>(Math::Vector3D(0.8, 0.8, 0.8), 5.0,  0.8, 0.2, 10.0);
-    auto mate = std::make_shared<Mate>(Math::Vector3D(0.7, 0.3, 0.3), 5.0,  0.2, 0.1, 10.0);
-    auto mate_1 = std::make_shared<Mate>(Math::Vector3D(0.5, 0.6, 0.3), 5.0,  0.2, 0.1, 10.0);
-    auto mate_2 = std::make_shared<Mate>(Math::Vector3D(0.6, 0.3, 0.6), 5.0,  0.2, 0.1, 10.0);
-    auto mate_3 = std::make_shared<Mate>(Math::Vector3D(0.3, 0.3, 0.8), 5.0,  0.2, 0.1, 10.0);
-    auto floor = std::make_shared<Mate>(Math::Vector3D(0.8, 0.8, 0.0), 5.0,  0.5, 0.2, 10.0);
+    auto metal = std::make_shared<Metal>(Math::Vector3D(0.8, 0.8, 0.8));
+    auto mate = std::make_shared<Mate>(Math::Vector3D(0.7, 0.3, 0.3));
+    auto mate_1 = std::make_shared<Mate>(Math::Vector3D(0.5, 0.6, 0.3));
+    auto mate_2 = std::make_shared<Mate>(Math::Vector3D(0.6, 0.3, 0.6));
+    auto mate_3 = std::make_shared<Mate>(Math::Vector3D(0.3, 0.3, 0.8));
+    auto floor = std::make_shared<Mate>(Math::Vector3D(0.8, 0.8, 0.0));
 
     sceneBuilder->add_object(Sphere(new Math::Point3D(0.0, -100.5, -2.0), 100, mate_1));
     sceneBuilder->add_object(Sphere(new Math::Point3D(-2.0, 0.0, -2.0), 0.5, mate_1));
@@ -133,22 +132,22 @@ int main() {
     sceneBuilder->add_object(Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
     sceneBuilder->add_object(Sphere(new Math::Point3D(2.0, 0.0, -2.0), 0.5, mate_1));
     sceneBuilder->add_object(Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
+    sceneBuilder->add_light(DLight(new Math::Vector3D(-7.0, -10.0, -2.0), Math::Vector3D(0.5, 0.5, 0.5), 10));
+
+
+    //* Alight : Intensity comprise entre 0 et 1;
     // sceneBuilder->add_object(Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
     // sceneBuilder->add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
-
-
-    sceneBuilder->add_light(DLight(new Math::Vector3D(-7.0, -10.0, -2.0), Math::Vector3D(0.5, 0.5, 0.5), 10));
-    //* Alight : Intensity comprise entre 0 et 1;
     // sceneBuilder->add_light(ALight(Math::Vector3D(0.5, 0.5, 0.5), 0.5));
 
     //! Marche pas
     int antialisaing = 100;
     int maxDepth = 50;
 
-    raytracer(  sceneBuilder->getCamera(),
+    raytracer(  *sceneBuilder->getCamera(),
                 sceneBuilder->getScene(),
-                sceneBuilder->getCamera().getWidth(),
-                sceneBuilder->getCamera().getHeight(),
+                sceneBuilder->getCamera()->getWidth(),
+                sceneBuilder->getCamera()->getHeight(),
                 antialisaing,
                 maxDepth);
     return 0;

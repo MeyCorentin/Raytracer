@@ -12,7 +12,6 @@ SRC = src/main.cpp	\
 		src/Math/Math.cpp \
 		src/Material/Metal.cpp \
 		src/Material/Mate.cpp \
-		src/Material/Material.cpp \
 		src/Objects/Shapes/hit_record.cpp \
 
 clean = *.o

@@ -29,27 +29,30 @@ class Scene {
         ~Scene() {};
         bool hit_global(const Ray& r, double t_min, double t_max, hit_record& rec, bool shadow_cast) {
             hit_record temp_rec;
-            bool hit_anything = false;
-            double temp_t_max = t_max;
+            bool _hit = false;
 
             for (const std::shared_ptr<IObject>& object : object_list)
             {
-                if (object->hits(r, t_min, temp_t_max, temp_rec)) {
-                    hit_anything = true;
-                    temp_t_max = temp_rec.t;
+                if (object->hits(r, t_min, t_max, temp_rec)) {
                     if (shadow_cast)
                         return true;
+                    _hit = true;
+                    t_max = temp_rec.t;
                     for (const std::shared_ptr<ILight>& light: light_list)
                         light->computeLight(*this, r, temp_rec, object, object_list);
                     rec = temp_rec;
                 }
             }
 
-            return hit_anything;
+            return _hit;
+        }
+        Camera *getCam()
+        {
+            return this->cam;
         }
         std::vector<std::shared_ptr<IObject>> object_list;
         std::vector<std::shared_ptr<ILight>> light_list;
-        Camera cam;
+        Camera *cam;
 
     protected:
     private:
