@@ -42,6 +42,7 @@ class Scene {
             return hit_anything;
         }
         std::vector<std::shared_ptr<IObject>> object_list;
+        Camera cam;
 
     protected:
     private:

@@ -107,15 +107,7 @@ int main() {
     SceneBuilder sceneBuilder;
     sceneBuilder.createNewScene();
     double aspect_ratio = 16.0 / 9.0;
-    int image_width = 400;
-    int image_height = static_cast<int>(image_width / aspect_ratio);
-    double viewport_height = 2.0;
-    double viewport_width = aspect_ratio * viewport_height;
-    Math::Point3D origin = Math::Point3D(0, 0, 0);
-    Math::Point3D horizontal = Math::Point3D(viewport_width, 0, 0);
-    Math::Point3D vertical = Math::Point3D(0, viewport_height, 0);
-    Rectangle3D *rect = new Rectangle3D(&origin , &vertical, &horizontal);
-    Camera cam = Camera(&origin, rect);
+    sceneBuilder.setCamera(400, 400 / aspect_ratio, aspect_ratio, 2.0);
 
     auto metal = std::make_shared<Metal>(Math::Vector3D(0.8, 0.8, 0.8), 5.0,  0.8, 0.2, 10.0);
     auto mate = std::make_shared<Mate>(Math::Vector3D(0.7, 0.3, 0.3), 5.0,  0.2, 0.1, 10.0);
@@ -137,6 +129,11 @@ int main() {
     int antialisaing = 100;
     int maxDepth = 50;
 
-    raytracer(cam, sceneBuilder.getScene(), image_width, image_height, antialisaing, maxDepth);
+    raytracer(  sceneBuilder.getCamera(),
+                sceneBuilder.getScene(),
+                sceneBuilder.getCamera().getWidth(),
+                sceneBuilder.getCamera().getHeight(),
+                antialisaing,
+                maxDepth);
     return 0;
 }
