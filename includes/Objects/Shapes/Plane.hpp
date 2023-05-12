@@ -29,7 +29,7 @@ class Plane: public IShape {
                 if (distance >= 0.0 && distance > t_min && distance < t_max) {
                     rec.t = distance;
                     rec.intersection = r.at(distance);
-                    rec.normal =  Math::VecToPoint(normal);
+                    rec.normal =  Math::VecToPoint(this->mat->getValue()) * Math::VecToPoint(normal);
                     rec.mat = this->mat;
                     return true;
                 }

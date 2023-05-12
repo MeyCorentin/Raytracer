@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** IShape
+** ITransform
 ** File description:
-** IShape
+** ITransform
 */
 
 #pragma once
@@ -11,16 +11,14 @@
 #include "Objects/Shapes/hit_record.hpp"
 #include "interface/IObject.hpp"
 
-class IShape: public IObject {
+class ITransform : public IObject {
     public:
-        virtual ~IShape() = default;
-        virtual bool hits(const Ray& r, double t_min, double t_max,  hit_record &rec) = 0;
+        virtual ~ITransform() = default;
+        virtual bool hits(const Ray& r, double t_min, double t_max, hit_record &rec) = 0;
         virtual std::shared_ptr<Material> getMat() = 0;
         virtual Math::Point3D *getOrigin() = 0;
         std::shared_ptr<Material> mat;
         Math::Point3D *origin;
-
     protected:
     private:
 };
-

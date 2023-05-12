@@ -12,6 +12,7 @@
 #include "Camera/Camera.hpp"
 #include "Light/DirectionalLight.hpp"
 #include "Light/AmbientLight.hpp"
+#include "Objects/Transforms/Translate.hpp"
 
 double clamp(double x, double min, double max) {
     if (x < min) return min;
@@ -111,7 +112,7 @@ int main() {
     sceneBuilder->createNewScene();
 
     double aspect_ratio = 16.0 / 9.0;
-    int image_width = 1080;
+    int image_width = 400;
     double viewport_height = 2.0;
     double viewport_width = aspect_ratio * viewport_height;
 
@@ -132,12 +133,12 @@ int main() {
     auto floor = std::make_shared<Mate>(Math::Vector3D(0.4, 0.4, 0.4));
     sceneBuilder->add_object(Sphere(new Math::Point3D(-2.0, 0.0, -2.0), 0.5, mate_1));
     sceneBuilder->add_object(Sphere(new Math::Point3D(-1.0, 0.0, -2.0), 0.5, mate_2));
-    sceneBuilder->add_object(Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
+    sceneBuilder->add_object(Translate(Sphere(new Math::Point3D(0.0, 0.0, 0.0), 0.5, mate), Math::Vector3D(0,0,-2)));
     sceneBuilder->add_object(Sphere(new Math::Point3D(2.0, 0.0, -2.0), 0.5, mate_1));
     sceneBuilder->add_object(Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
     sceneBuilder->add_object(Plane(Math::Vector3D(0.0, -1.0, 0.0), Math::Point3D(0.0, -0.5, 0.0), floor));
-    // sceneBuilder->add_object(Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
-    // sceneBuilder->add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
+    sceneBuilder->add_object(Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
+    sceneBuilder->add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
     sceneBuilder->add_light(DLight(new Math::Vector3D(-7.0, -10.0, -2.0), Math::Vector3D(0.5, 0.5, 0.5), 10));
     sceneBuilder->add_light(DLight(new Math::Vector3D(7.0, -10.0, -2.0), Math::Vector3D(0.5, 0.5, 0.5), 10));
     sceneBuilder->add_light(ALight(Math::Vector3D(0.7, 0.7, 0.7), 0.3));
