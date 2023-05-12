@@ -68,6 +68,7 @@ class Sphere: public IShape {
         {
             return origin;
         }
+        std::string mat_name;
         std::shared_ptr<Material> mat;
         Math::Point3D _translation;
         Math::Point3D *origin;

@@ -42,7 +42,8 @@ class DLight: public ILight {
             Math::Vector3D light_reflected = mat_value / M_PI;
             Math::Vector3D temp_result = mat_value * this->color  * light_power;
             Math::Vector3D result =  temp_result * light_reflected;
-            temp_rec.light_result = Math::VecToPoint(result);
+            Math::Point3D temp = Math::VecToPoint(normal);
+            temp_rec.light_result = Math::VecToPoint(result) * random_in_hemisphere(temp);
             temp_rec.light_result = Math::Point3D(  clamp(temp_rec.light_result.x_coords, 0.0 , 1.0),
                                                     clamp(temp_rec.light_result.y_coords, 0.0 , 1.0),
                                                     clamp(temp_rec.light_result.z_coords, 0.0 , 1.0));
