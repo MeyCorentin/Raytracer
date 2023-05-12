@@ -27,7 +27,6 @@ class Sphere: public IShape {
         };
         ~Sphere() {};
         bool hits(const Ray& r, double t_min, double t_max, hit_record& rec) {
-            Math::Point3D sphere_color(0.8, 0.8, 0.0);
             Math::Vector3D temp_1 = PointToVec(*r.origin);
             Math::Vector3D temp_2 = PointToVec(*origin);
             Math::Vector3D oc = temp_1 - temp_2;
@@ -45,7 +44,7 @@ class Sphere: public IShape {
                     rec.intersection = r.at(t1);
                     Math::Point3D normal = (rec.intersection - *origin) / radius;
                     Math::Point3D shading_color = 0.5 * (normal + Math::Vector3D(1,1,1));
-                    rec.normal =  sphere_color * shading_color;
+                    rec.normal =  Math::VecToPoint(this->mat->getValue()) * shading_color;
                     rec.mat = this->mat;
                     return true;
                 } else if (t2 < t_max && t2 > t_min) {
@@ -53,7 +52,7 @@ class Sphere: public IShape {
                     rec.intersection = r.at(t2);
                     Math::Point3D normal = (rec.intersection - *origin) / radius;
                     Math::Point3D shading_color = 0.5 * (normal + Math::Vector3D(1,1,1));
-                    rec.normal =  sphere_color * shading_color;
+                    rec.normal =  Math::VecToPoint(this->mat->getValue()) * shading_color;
                     rec.mat = this->mat;
                     return true;
                 }

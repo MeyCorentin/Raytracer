@@ -5,6 +5,7 @@
 #include "interface/IObject.hpp"
 #include "Objects/Shapes/Rectangle3D.hpp"
 #include "Objects/Shapes/Triangle3D.hpp"
+#include "Objects/Shapes/Plane.hpp"
 #include "Objects/Shapes/Cone.hpp"
 #include "Objects/Shapes/Plane.hpp"
 #include "Scene/SceneBuilder.hpp"
@@ -127,19 +128,19 @@ int main() {
     auto mate_1 = std::make_shared<Mate>(Math::Vector3D(0.5, 0.6, 0.3));
     auto mate_2 = std::make_shared<Mate>(Math::Vector3D(0.6, 0.3, 0.6));
     auto mate_3 = std::make_shared<Mate>(Math::Vector3D(0.3, 0.3, 0.8));
-    auto floor = std::make_shared<Mate>(Math::Vector3D(0.8, 0.8, 0.0));
-
-    sceneBuilder->add_object(Sphere(new Math::Point3D(0.0, -100.5, -2.0), 100, mate_1));
+    auto mate_4 = std::make_shared<Mate>(Math::Vector3D(0.9, 0.8, 0.7));
+    auto floor = std::make_shared<Mate>(Math::Vector3D(0.4, 0.4, 0.4));
     sceneBuilder->add_object(Sphere(new Math::Point3D(-2.0, 0.0, -2.0), 0.5, mate_1));
     sceneBuilder->add_object(Sphere(new Math::Point3D(-1.0, 0.0, -2.0), 0.5, mate_2));
     sceneBuilder->add_object(Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
     sceneBuilder->add_object(Sphere(new Math::Point3D(2.0, 0.0, -2.0), 0.5, mate_1));
     sceneBuilder->add_object(Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
+    sceneBuilder->add_object(Plane(Math::Vector3D(0.0, -1.0, 0.0), Math::Point3D(0.0, -0.5, 0.0), floor));
     // sceneBuilder->add_object(Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
     // sceneBuilder->add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
     sceneBuilder->add_light(DLight(new Math::Vector3D(-7.0, -10.0, -2.0), Math::Vector3D(0.5, 0.5, 0.5), 10));
     sceneBuilder->add_light(DLight(new Math::Vector3D(7.0, -10.0, -2.0), Math::Vector3D(0.5, 0.5, 0.5), 10));
-    sceneBuilder->add_light(ALight(Math::Vector3D(0.7, 0.7, 0.7), 0.9));
+    sceneBuilder->add_light(ALight(Math::Vector3D(0.7, 0.7, 0.7), 0.3));
 
     raytracer(  *sceneBuilder->getCamera(),
                 sceneBuilder->getScene(),
