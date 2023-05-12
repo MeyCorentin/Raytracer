@@ -12,7 +12,7 @@
 #include "Camera/Ray.hpp"
 #include "Scene/Scene.hpp"
 #include <algorithm>
-
+#include "main.hpp"
 class DLight: public ILight {
     public:
         //DirectionalLight
@@ -31,7 +31,6 @@ class DLight: public ILight {
             )
         {
             double light_intensity = 0.0;
-
             Math::Vector3D mat_value = object.get()->getMat().get()->getValue();
             Math::Point3D hit_point = *r.origin + (Math::VecToPoint(*r.direction) * temp_rec.t);
             Math::Vector3D normal = Math::PointToVec(hit_point - *(object.get()->getOrigin())).unit_vector();
@@ -44,7 +43,11 @@ class DLight: public ILight {
             Math::Vector3D temp_result = mat_value * this->color  * light_power;
             Math::Vector3D result =  temp_result * light_reflected;
             temp_rec.light_result = Math::VecToPoint(result);
+            temp_rec.light_result = Math::Point3D(  clamp(temp_rec.light_result.x_coords, 0.0 , 1.0),
+                                                    clamp(temp_rec.light_result.y_coords, 0.0 , 1.0),
+                                                    clamp(temp_rec.light_result.z_coords, 0.0 , 1.0));
             return true;
+
         }
         Math::Vector3D *direction;
         Math::Vector3D color;

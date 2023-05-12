@@ -104,6 +104,8 @@ void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int 
 
 int main() {
     // TODO: Move to Camera Class
+    int antialisaing = 100;
+    int maxDepth = 50;
     SceneBuilder *sceneBuilder = new SceneBuilder();
     sceneBuilder->createNewScene();
 
@@ -111,6 +113,7 @@ int main() {
     int image_width = 400;
     double viewport_height = 2.0;
     double viewport_width = aspect_ratio * viewport_height;
+
     Math::Point3D origin = Math::Point3D(0, 0, 0);
     Math::Point3D horizontal = Math::Point3D(viewport_width, 0, 0);
     Math::Point3D vertical = Math::Point3D(0, viewport_height, 0);
@@ -130,19 +133,13 @@ int main() {
     sceneBuilder->add_object(Sphere(new Math::Point3D(-2.0, 0.0, -2.0), 0.5, mate_1));
     sceneBuilder->add_object(Sphere(new Math::Point3D(-1.0, 0.0, -2.0), 0.5, mate_2));
     sceneBuilder->add_object(Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
-    sceneBuilder->add_object(Sphere(new Math::Point3D(2.0, 0.0, -2.0), 0.5, mate_1));
+    sceneBuilder->add_object(Sphere(new Math::Point3D(2.0, 0.0, -1.0), 0.5, mate_1));
     sceneBuilder->add_object(Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
-    sceneBuilder->add_light(DLight(new Math::Vector3D(-7.0, -10.0, -2.0), Math::Vector3D(0.5, 0.5, 0.5), 10));
-
-
-    //* Alight : Intensity comprise entre 0 et 1;
     // sceneBuilder->add_object(Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
     // sceneBuilder->add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
-    // sceneBuilder->add_light(ALight(Math::Vector3D(0.5, 0.5, 0.5), 0.5));
-
-    //! Marche pas
-    int antialisaing = 100;
-    int maxDepth = 50;
+    sceneBuilder->add_light(DLight(new Math::Vector3D(-7.0, -10.0, -2.0), Math::Vector3D(0.5, 0.5, 0.5), 10));
+    sceneBuilder->add_light(DLight(new Math::Vector3D(7.0, -10.0, -2.0), Math::Vector3D(0.5, 0.5, 0.5), 10));
+    sceneBuilder->add_light(ALight(Math::Vector3D(0.7, 0.7, 0.7), 0.5));
 
     raytracer(  *sceneBuilder->getCamera(),
                 sceneBuilder->getScene(),
