@@ -9,6 +9,8 @@
 #include "Objects/Shapes/Plane.hpp"
 #include "Scene/SceneBuilder.hpp"
 #include "Camera/Camera.hpp"
+#include "Parser/PShape.hpp"
+#include "Parser/PMaterial.hpp"
 
 double clamp(double x, double min, double max) {
     if (x < min) return min;
@@ -104,8 +106,11 @@ void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int 
 
 int main() {
     // TODO: Move to Camera Class
+    Scene *scene = new Scene();
     SceneBuilder *sceneBuilder = new SceneBuilder();
     sceneBuilder->createNewScene();
+    libconfig::Config cfg;
+    cfg.readFile("my.cfg");
 
     double aspect_ratio = 16.0 / 9.0;
     int image_width = 400;
@@ -127,14 +132,16 @@ int main() {
     auto mate_3 = std::make_shared<Mate>(Math::Vector3D(0.3, 0.3, 0.8), 5.0,  0.2, 0.1, 10.0);
     auto floor = std::make_shared<Mate>(Math::Vector3D(0.8, 0.8, 0.0), 5.0,  0.5, 0.2, 10.0);
 
-    sceneBuilder->add_object(Sphere(new Math::Point3D(-2.0, 0.0, -2.0), 0.5, mate_1));
-    sceneBuilder->add_object(Sphere(new Math::Point3D(-1.0, 0.0, -2.0), 0.5, mate_2));
-    sceneBuilder->add_object(Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
-    sceneBuilder->add_object(Sphere(new Math::Point3D(2.0, 0.0, -2.0), 0.5, mate_1));
-    sceneBuilder->add_object(Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
-    sceneBuilder->add_object(Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
-    sceneBuilder->add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
-
+    PShape *shape = new PShape(cfg, sceneBuilder, scene);
+    shape->addShape<Sphere>();
+    shape->addShape<Cone>();
+    // sceneBuilder->add_object(Sphere(new Math::Point3D(-2.0, 0.0, -2.0), 0.5, mate_1));
+    // sceneBuilder->add_object(Sphere(new Math::Point3D(-1.0, 0.0, -2.0), 0.5, mate_2));
+    // sceneBuilder->add_object(Sphere(new Math::Point3D(0.0, 0.0, -2.0), 0.5, mate));
+    // sceneBuilder->add_object(Sphere(new Math::Point3D(2.0, 0.0, -2.0), 0.5, mate_1));
+    // sceneBuilder->add_object(Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
+    // sceneBuilder->add_object(Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
+    // sceneBuilder->add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
 
     //! Marche pas
     int antialisaing = 100;

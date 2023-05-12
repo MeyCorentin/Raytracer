@@ -13,14 +13,8 @@
 #include "interface/IObject.hpp"
 #include"Objects/Shapes/Sphere.hpp"
 #include "Objects/Shapes/hit_record.hpp"
-
-namespace Shape
-{
-    class Sphere;
-    class Triangle3D;
-    class Cone;
-    // class Plane;
-}
+#include "Camera/Camera.hpp"
+#include <map>
 
 class Scene {
     public:
@@ -41,6 +35,7 @@ class Scene {
 
             return hit_anything;
         }
+        std::map<const std::string, std::shared_ptr<Material>> material_list;
         std::vector<std::shared_ptr<IObject>> object_list;
         Camera cam;
 
