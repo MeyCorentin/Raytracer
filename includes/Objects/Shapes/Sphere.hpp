@@ -67,6 +67,15 @@ class Sphere: public IShape {
         {
             return origin;
         }
+        Math::Vector3D *getNormal()
+        {
+            return &this->normal;
+        }
+        void setNormal(Math::Vector3D n_rotate)
+        {
+            normal = n_rotate;
+        }
+        Math::Vector3D normal;
         std::string mat_name;
         std::shared_ptr<Material> mat;
         Math::Point3D *origin;

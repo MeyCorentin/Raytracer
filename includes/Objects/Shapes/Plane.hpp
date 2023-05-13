@@ -44,8 +44,16 @@ class Plane: public IShape {
         {
             return &origin;
         }
-        std::shared_ptr<Material> mat;
+        Math::Vector3D *getNormal()
+        {
+            return &this->normal;
+        }
+        void setNormal(Math::Vector3D n_rotate)
+        {
+            normal = n_rotate;
+        }
         Math::Vector3D normal;
+        std::shared_ptr<Material> mat;
         Math::Point3D origin;
 
     protected:

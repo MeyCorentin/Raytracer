@@ -35,6 +35,15 @@ class Translate: public ITransform {
         {
             return object.get()->getOrigin();
         }
+        Math::Vector3D *getNormal()
+        {
+            return &this->normal;
+        }
+        void setNormal(Math::Vector3D n_rotate)
+        {
+            normal = n_rotate;
+        }
+        Math::Vector3D normal;
         std::shared_ptr<IObject> object;
         Math::Vector3D value;
 

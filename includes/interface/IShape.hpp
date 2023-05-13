@@ -17,8 +17,11 @@ class IShape: public IObject {
         virtual bool hits(const Ray& r, double t_min, double t_max,  hit_record &rec) = 0;
         virtual std::shared_ptr<Material> getMat() = 0;
         virtual Math::Point3D *getOrigin() = 0;
+        virtual Math::Vector3D *getNormal() = 0;
+        virtual void setNormal(Math::Vector3D n_rotate) = 0;
         std::shared_ptr<Material> mat;
         Math::Point3D *origin;
+        Math::Vector3D normal;
 
     protected:
     private:
