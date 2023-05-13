@@ -13,39 +13,44 @@
 #include <vector>
 #include <libconfig.h++>
 #include "Scene/SceneBuilder.hpp"
+#include "Objects/Shapes/Rectangle3D.hpp"
 
 class PCamera {
         protected:
-            SceneBuilder *sceneBuilder;
+            SceneBuilder *_sceneBuilder;
         private:
             const libconfig::Config& _cfg;
             const std::string cam = "camera";
-            const std::string pos = cam + ".position";
             const std::string res = cam + ".resolution";
-            const std::string rot = cam + ".rotation";
+            const std::string ratio = cam + ".ratio";
             struct Res {
                 int width, height;
             } _res;
-            struct Pos {
-                double x, y, z;
-            } _pos;
-            struct Rot {
-                double x, y, z;
-            } _rot;
+            struct Antialisaing {
+                int value;
+            } _anti;
+            struct Ratio {
+                double value;
+            } _ratio;
+            struct Depth {
+                int value;
+            } _depth;
             struct FieldOfView {
                 double value;
             } _fov;
+            void SettingsCamera();
+            void CreateCamera(Camera*, Rectangle3D*, Math::Point3D*, Math::Point3D*, Math::Point3D*);
         public:
-            void SettingsCamera(const libconfig::Config& cfg);
-            void CreateCamera();
-            PCamera(const libconfig::Config& cfg): _cfg(cfg)
+            PCamera(const libconfig::Config& cfg, SceneBuilder *sceneBuilder, Camera *cam, Rectangle3D *rect, Math::Point3D *origin, Math::Point3D *horizontal, Math::Point3D *vertical): _cfg(cfg)
             {
-                SettingsCamera(cfg);
-                CreateCamera();
+                _sceneBuilder = sceneBuilder;
+                SettingsCamera();
+                CreateCamera(cam, rect, origin, horizontal, vertical);
             }
             Res getResolution()const{return _res;}
-            Pos getPosition()const{return _pos;}
-            Rot getRotation()const{return _rot;}
+            Antialisaing getAntialisaing()const{return _anti;}
+            Ratio getRation()const{return _ratio;}
+            Depth getDepth()const{return _depth;}
 
             FieldOfView getFOV()const{return _fov;}
     };

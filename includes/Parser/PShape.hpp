@@ -20,6 +20,7 @@
 #include <type_traits>
 #include <cstdint>
 #include "PMaterial.hpp"
+#include "PDecorator.hpp"
 
 class PShape {
         protected:
@@ -33,48 +34,37 @@ class PShape {
             const std::string planes = prim + ".planes";
             const std::string cones = prim + ".cones";
             const std::string cylinder = prim + ".cylinders";
+            Math::Vector3D tV, rV;
+            Math::Point3D *oV;
             struct MySphere {
                 double x, y, z, ra;
-                std::string mat;
+                std::string mat, rot, trans;
             } mySphere;
             std::vector<MySphere> vec_spheres;
             struct MyCone {
                 double x, y, z, ra, h;
-                std::string mat;
+                std::string mat, rot, trans;
             } myCone;
             std::vector<MyCone> vec_cones;
             struct MyCylinder {
                 double x, y, z, ra, h;
-                std::string mat;
+                std::string mat, rot, trans;
             } myCylinder;
             std::vector<MyCylinder> vec_cylinders;
             struct MyPlane {
                 double vx,vy,vz;
                 double px,py,pz;
-                std::string mat;
+                std::string mat, rot, trans;
             } myPlane;
             std::vector<MyPlane> vec_planes;
             void addSpheres();
             void addCones();
             void addPlanes();
             void addCylinders();
-            void createSpheres(const libconfig::Config& cfg, PMaterial *pmaterial, Scene *scene);
-            void createCones(const libconfig::Config& cfg, PMaterial *pmaterial, Scene *scene);
-            void createCylinders(const libconfig::Config& cfg, PMaterial *pmaterial, Scene *scene);
-            void createPlanes(const libconfig::Config& cfg, PMaterial *pmaterial, Scene *scene);
-        public:
-
-            PShape(const libconfig::Config& cfg, SceneBuilder *sceneBuilder, Scene *scene): _cfg(cfg)
-            {
-                _sceneBuilder = sceneBuilder;
-                _pmaterial = new PMaterial(cfg);
-                _scene = scene;
-                createSpheres(cfg, _pmaterial, scene);
-                createCones(cfg, _pmaterial, scene);
-                createCylinders(cfg, _pmaterial, scene);
-                createPlanes(cfg, _pmaterial, scene);
-            }
-
+            void createSpheres(const libconfig::Config& cfg, PMaterial *pmaterial, PDecorator *decorator, Scene *scene);
+            void createCones(const libconfig::Config& cfg, PMaterial *pmaterial, PDecorator *decorator, Scene *scene);
+            void createCylinders(const libconfig::Config& cfg, PMaterial *pmaterial, PDecorator *decorator, Scene *scene);
+            void createPlanes(const libconfig::Config& cfg, PMaterial *pmaterial, PDecorator *decorator, Scene *scene);
             template<class T>
             void addShape()
             {
@@ -82,6 +72,23 @@ class PShape {
                 if (std::is_same<T, Cone>::value) addCones();
                 if (std::is_same<T, Plane>::value) addPlanes();
             }
+        public:
+
+            PShape(const libconfig::Config& cfg, SceneBuilder *sceneBuilder, PDecorator *decorator, Scene *scene): _cfg(cfg)
+            {
+                _sceneBuilder = sceneBuilder;
+                _pmaterial = new PMaterial(cfg);
+                _scene = scene;
+                createSpheres(cfg, _pmaterial, decorator, scene);
+                createCones(cfg, _pmaterial, decorator, scene);
+                createCylinders(cfg, _pmaterial, decorator, scene);
+                createPlanes(cfg, _pmaterial, decorator, scene);
+                addShape<Sphere>();
+                addShape<Cone>();
+                addShape<Plane>();
+
+            }
+
             std::vector<MySphere> getSpheres() const{return vec_spheres;}
             std::vector<MyCone> getCones() const{return vec_cones;}
             std::vector<MyCylinder> getCylinders() const{return vec_cylinders;}

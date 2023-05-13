@@ -27,7 +27,6 @@ class PMaterial {
             struct MyMetal {
                 double r, g, b;
             } _metal;
-        public:
             void setMetal(const std::string name, Scene *scene)
             {
                 _metal.r = _cfg.lookup(mat + "." + name + ".r");
@@ -42,6 +41,7 @@ class PMaterial {
                 _mate.b = _cfg.lookup(mat + "." + name + ".b");
                 scene->material_list.insert(std::pair<const std::string, std::shared_ptr<Material>>(name, std::make_shared<Mate>(Math::Vector3D(_mate.r, _mate.g, _mate.b))));
             }
+        public:
             void setMaterial(const std::string name, Scene *scene)
             {
                 if ((const std::string)_cfg.lookup(mat + "." + name + ".type") == "mate") setMate(name, scene);

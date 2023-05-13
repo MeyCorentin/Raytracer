@@ -16,6 +16,7 @@
 #include "Objects/Shapes/hit_record.hpp"
 #include <map>
 #include "Camera/Camera.hpp"
+#include "interface/IObjectDecorator.hpp"
 
 class Scene {
     public:
@@ -50,6 +51,7 @@ class Scene {
             return this->cam;
         }
         std::map<const std::string, std::shared_ptr<Material>> material_list;
+        std::map<const std::string, Math::Vector3D> decorator_list;
         std::vector<std::shared_ptr<IObject>> object_list;
         std::vector<std::shared_ptr<ILight>> light_list;
         Camera *cam;

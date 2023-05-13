@@ -20,10 +20,7 @@
 #include "Light/DirectionalLight.hpp"
 #include "Light/AmbientLight.hpp"
 #include "Objects/ObjectDecorator/Translate.hpp"
-#include "Parser/PShape.hpp"
-#include "Parser/PMaterial.hpp"
-#include "Parser/PLight.hpp"
-#include "Parser/PTransformation.hpp"
+
 
 double clamp(double x, double min, double max) {
     if (x < min) return min;

@@ -7,21 +7,18 @@
 
 #include "../includes/Parser/PCamera.hpp"
 
-void PCamera::SettingsCamera(const libconfig::Config& cfg)
+void PCamera::SettingsCamera()
 {
     _res.width = _cfg.lookup(res + ".width");
     _res.height = _cfg.lookup(res + ".height");
-    _rot.x = _cfg.lookup(rot + ".x");
-    _rot.y = _cfg.lookup(rot + ".y");
-    _rot.z = _cfg.lookup(rot + ".z");
-
-    _pos.x = _cfg.lookup(pos + ".x");
-    _pos.y = _cfg.lookup(pos + ".y");
-    _pos.z = _cfg.lookup(pos + ".z");
+    _ratio.value = (double)_cfg.lookup(ratio + ".value") / (double)_cfg.lookup(ratio + ".divider");
+    _depth.value = _cfg.lookup(cam + ".depth");
+    _anti.value = _cfg.lookup(cam + ".antialisaing");
     _fov.value = _cfg.lookup(cam + ".fieldOfView");
 }
 
-void PCamera::CreateCamera()
+void PCamera::CreateCamera(Camera *cam, Rectangle3D *rect, Math::Point3D *origin, Math::Point3D *horizontal, Math::Point3D *vertical)
 {
-    // sceneBuilder->setCamera(_res.width, _res.height, (16.0 / 9.0), 2.0);
+    _sceneBuilder->createNewScene();
+    _sceneBuilder->setCamera(_res.width, _ratio.value, _fov.value, _anti.value, _depth.value, cam, rect, origin, horizontal, vertical);
 }
