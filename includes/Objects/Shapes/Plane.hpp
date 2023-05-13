@@ -10,7 +10,7 @@
 
 #include "interface/IShape.hpp"
 #include "Camera/Ray.hpp"
-#include <stdlib.h> 
+#include <stdlib.h>
 
 class Plane: public IShape {
     public:

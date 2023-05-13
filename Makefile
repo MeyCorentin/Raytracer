@@ -13,6 +13,9 @@ SRC = src/main.cpp	\
 		src/Material/Metal.cpp \
 		src/Material/Mate.cpp \
 		src/Objects/Shapes/hit_record.cpp \
+		src/CreateObjects/CreateCamera.cpp	\
+		src/CreateObjects/CreateLights.cpp	\
+		src/CreateObjects/CreateShapes.cpp
 
 clean = *.o
 
@@ -23,7 +26,7 @@ ${NAME}:
 	@echo 'Files compiled'
 
 all : ${NAME}
-	@${PP} -o ${NAME} ${SRC} -Iincludes -std=c++20 -Wall -g3
+	@${PP} -o ${NAME} `pkg-config --cflags libconfig++` ${SRC} `pkg-config --libs libconfig++` -Iincludes -std=c++20 -Wall -g3
 
 clean :
 	@rm -rf ${clean}

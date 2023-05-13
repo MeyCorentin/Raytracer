@@ -12,6 +12,7 @@
 #include "Scene/Scene.hpp"
 #include "Objects/Shapes/Rectangle3D.hpp"
 #include "Camera/Camera.hpp"
+
 namespace Shape
 {
     class Sphere;

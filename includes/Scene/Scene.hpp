@@ -12,8 +12,10 @@
 #include <memory>
 #include "interface/IObject.hpp"
 #include "interface/ILight.hpp"
-#include"Objects/Shapes/Sphere.hpp"
+#include "Objects/Shapes/Sphere.hpp"
 #include "Objects/Shapes/hit_record.hpp"
+#include <map>
+#include "Camera/Camera.hpp"
 
 namespace Shape
 {
@@ -55,6 +57,7 @@ class Scene {
         {
             return this->cam;
         }
+        std::map<const std::string, std::shared_ptr<Material>> material_list;
         std::vector<std::shared_ptr<IObject>> object_list;
         std::vector<std::shared_ptr<ILight>> light_list;
         Camera *cam;
@@ -62,4 +65,3 @@ class Scene {
     protected:
     private:
 };
-

@@ -13,6 +13,10 @@
 #include "Light/DirectionalLight.hpp"
 #include "Light/AmbientLight.hpp"
 #include "Objects/Transforms/Translate.hpp"
+#include "Parser/PShape.hpp"
+#include "Parser/PMaterial.hpp"
+#include "Parser/PLight.hpp"
+#include "Parser/PTransformation.hpp"
 
 double clamp(double x, double min, double max) {
     if (x < min) return min;
@@ -106,10 +110,13 @@ void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int 
 
 int main() {
     // TODO: Move to Camera Class
+    Scene *scene = new Scene();
     int antialisaing = 100;
     int maxDepth = 50;
     SceneBuilder *sceneBuilder = new SceneBuilder();
     sceneBuilder->createNewScene();
+    libconfig::Config cfg;
+    cfg.readFile("my.cfg");
 
     double aspect_ratio = 16.0 / 9.0;
     int image_width = 400;
@@ -126,22 +133,12 @@ int main() {
 
     auto metal = std::make_shared<Metal>(Math::Vector3D(0.8, 0.8, 0.8));
     auto mate = std::make_shared<Mate>(Math::Vector3D(0.7, 0.3, 0.3));
-    auto mate_1 = std::make_shared<Mate>(Math::Vector3D(0.5, 0.6, 0.3));
-    auto mate_2 = std::make_shared<Mate>(Math::Vector3D(0.6, 0.3, 0.6));
-    auto mate_3 = std::make_shared<Mate>(Math::Vector3D(0.3, 0.3, 0.8));
-    auto mate_4 = std::make_shared<Mate>(Math::Vector3D(0.9, 0.8, 0.7));
-    auto floor = std::make_shared<Mate>(Math::Vector3D(0.4, 0.4, 0.4));
-    sceneBuilder->add_object(Sphere(new Math::Point3D(-2.0, 0.0, -2.0), 0.5, mate_1));
-    sceneBuilder->add_object(Sphere(new Math::Point3D(-1.0, 0.0, -2.0), 0.5, mate_2));
-    sceneBuilder->add_object(Translate(Sphere(new Math::Point3D(0.0, 0.0, 0.0), 0.5, mate), Math::Vector3D(0,0,-2)));
-    sceneBuilder->add_object(Sphere(new Math::Point3D(2.0, 0.0, -2.0), 0.5, mate_1));
-    sceneBuilder->add_object(Sphere(new Math::Point3D(1.0, 0.0, -2.0), 0.5, mate_2));
-    sceneBuilder->add_object(Plane(Math::Vector3D(0.0, -1.0, 0.0), Math::Point3D(0.0, -0.5, 0.0), floor));
-    sceneBuilder->add_object(Cone(new Math::Point3D(0.3, 0.0, -0.7), 3, mate_3));
-    sceneBuilder->add_object(Cone(new Math::Point3D(-0.3, 0.0, -0.7), 3, mate_3));
-    sceneBuilder->add_light(DLight(new Math::Vector3D(-7.0, -10.0, -2.0), Math::Vector3D(0.5, 0.5, 0.5), 10));
-    sceneBuilder->add_light(DLight(new Math::Vector3D(7.0, -10.0, -2.0), Math::Vector3D(0.5, 0.5, 0.5), 10));
-    sceneBuilder->add_light(ALight(Math::Vector3D(0.7, 0.7, 0.7), 0.3));
+    PShape *shape = new PShape(cfg, sceneBuilder, scene);
+    shape->addShape<Sphere>();
+    shape->addShape<Cone>();
+    shape->addShape<Plane>();
+    PTransformation transfo(cfg, sceneBuilder, shape, scene);
+    PLight light(cfg, sceneBuilder);
 
     raytracer(  *sceneBuilder->getCamera(),
                 sceneBuilder->getScene(),
