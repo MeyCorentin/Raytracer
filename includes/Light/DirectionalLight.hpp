@@ -11,8 +11,9 @@
 #include "interface/ILight.hpp"
 #include "Camera/Ray.hpp"
 #include "Scene/Scene.hpp"
-#include <algorithm>
 #include "main.hpp"
+#include <algorithm>
+
 class DLight: public ILight {
     public:
         //DirectionalLight

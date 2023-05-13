@@ -17,14 +17,6 @@
 #include <map>
 #include "Camera/Camera.hpp"
 
-namespace Shape
-{
-    class Sphere;
-    class Triangle3D;
-    class Cone;
-    // class Plane;
-}
-
 class Scene {
     public:
         Scene() {};

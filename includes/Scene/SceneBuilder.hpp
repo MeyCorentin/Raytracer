@@ -13,14 +13,6 @@
 #include "Objects/Shapes/Rectangle3D.hpp"
 #include "Camera/Camera.hpp"
 
-namespace Shape
-{
-    class Sphere;
-    class Triangle3D;
-    class Cone;
-    // class Plane;
-}
-
 class SceneBuilder {
 
     public:

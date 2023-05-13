@@ -9,6 +9,7 @@
 
 #include "Objects/Shapes/hit_record.hpp"
 #include "Camera/Ray.hpp"
+
 class IObject {
     public:
         virtual ~IObject() = default;

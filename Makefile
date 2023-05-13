@@ -9,6 +9,7 @@ PP = g++
 CC = gcc
 
 SRC = src/main.cpp	\
+		src/raytracer.cpp	\
 		src/Math/Math.cpp \
 		src/Material/Metal.cpp \
 		src/Material/Mate.cpp \
