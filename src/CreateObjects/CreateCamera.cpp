@@ -23,5 +23,5 @@ void PCamera::SettingsCamera(const libconfig::Config& cfg)
 
 void PCamera::CreateCamera()
 {
-    sceneBuilder->setCamera(_res.width, _res.height, (16.0 / 9.0), 2.0);
+    // sceneBuilder->setCamera(_res.width, _res.height, (16.0 / 9.0), 2.0);
 }

@@ -18,6 +18,8 @@ class Camera {
          Rectangle3D *screen;
         int image_height;
         int image_width;
+        int maxDepth;
+        int antialiasing;
         Camera(Math::Point3D *_origin,  Rectangle3D *_screen) : origin(_origin), screen(_screen) {}
         void setResolution(int width, int height)
         {
@@ -31,6 +33,23 @@ class Camera {
         int getHeight()
         {
             return this->image_height;
+        }
+        int getAntialiasing()
+        {
+            return this->antialiasing;
+        }
+        int getMaxDepth()
+        {
+            return this->maxDepth;
+        }
+
+        void setAntialiasing(int antialiasing)
+        {
+            this->antialiasing = antialiasing;
+        }
+        void setMaxDepth(int maxDepth)
+        {
+            this->maxDepth = maxDepth;
         }
         Camera() {};
         Ray *ray(double u, double v) {

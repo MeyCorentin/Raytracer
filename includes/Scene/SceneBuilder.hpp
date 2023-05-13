@@ -12,6 +12,7 @@
 #include "Scene/Scene.hpp"
 #include "Objects/Shapes/Rectangle3D.hpp"
 #include "Camera/Camera.hpp"
+#include "main.hpp"
 
 class SceneBuilder {
 
@@ -27,19 +28,37 @@ class SceneBuilder {
         {
             scene = new Scene();
         }
+        void build()
+        {
+            raytracer(this->scene);
+        }
         void setCamera(Camera *cam)
         {
             scene->cam = cam;
         }
-        void setCamera(int image_width, int image_height, double aspect_ratio, double viewport_height)
-        {
+        void setCamera(
+                int image_width,
+                double aspect_ratio,
+                double viewport_height,
+                int antialisaing,
+                int maxDepth,
+                Camera *cam,
+                Rectangle3D *rect,
+                Math::Point3D *origin,
+                Math::Point3D *horizontal,
+                Math::Point3D *vertical
+        ) {
+            int image_height = image_width / aspect_ratio;
             double viewport_width = aspect_ratio * viewport_height;
-            Math::Point3D origin = Math::Point3D(0, 0, 0);
-            Math::Point3D horizontal = Math::Point3D(viewport_width, 0, 0);
-            Math::Point3D vertical = Math::Point3D(0, viewport_height, 0);
-            Rectangle3D *rect = new Rectangle3D(&origin , &vertical, &horizontal);
-            scene->cam = new Camera(&origin, rect);
-            scene->cam->setResolution(image_width, image_height);
+            origin = new Math::Point3D(0, 0, 0);
+            horizontal = new Math::Point3D(viewport_width, 0, 0);
+            vertical = new  Math::Point3D(0, viewport_height, 0);
+            rect = new Rectangle3D(origin , vertical, horizontal);
+            *cam = Camera(origin, rect);
+            cam->setResolution(image_width, image_height);
+            cam->setAntialiasing(antialisaing);
+            cam->setAntialiasing(maxDepth);
+            scene->cam = cam;
         }
         Camera *getCamera()
         {

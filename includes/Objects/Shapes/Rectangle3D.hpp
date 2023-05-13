@@ -20,6 +20,7 @@ class Rectangle3D {
         Rectangle3D(Math::Point3D *_origin, Math::Point3D *_bottom_side, Math::Point3D *_left_side)
             : origin(_origin), bottom_side(_bottom_side), left_side(_left_side) {}
         ~Rectangle3D(){};
+        Rectangle3D(){};
         Math::Point3D pointAt(double u, double v)
         {
             temp_u = u;
