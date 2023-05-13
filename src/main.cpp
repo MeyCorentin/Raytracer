@@ -108,15 +108,28 @@ void raytracer(Camera cam, Scene *scene, int image_width, int image_height, int 
     }
 }
 
-int main() {
+void help()
+{
+    std::cout << "USAGE: ./raytracer <SCENE_FILE>\n\tSCENE_FILE: scene configuration\n";
+}
+
+int main(int ac, char **av) {
+    const std::string h = "--help";
+    if (ac != 2)
+        return 84;
+    else if (h.compare(av[1]) == 0) {
+        help();
+        return 0;
+    }
+
+    libconfig::Config cfg;
+    cfg.readFile(av[1]);
     // TODO: Move to Camera Class
     Scene *scene = new Scene();
     int antialisaing = 100;
     int maxDepth = 50;
     SceneBuilder *sceneBuilder = new SceneBuilder();
     sceneBuilder->createNewScene();
-    libconfig::Config cfg;
-    cfg.readFile("my.cfg");
 
     double aspect_ratio = 16.0 / 9.0;
     int image_width = 400;
