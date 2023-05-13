@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "interface/ITransform.hpp"
+#include "interface/IObjectDecorator.hpp"
 
-class Translate: public ITransform {
+class Translate: public IObjectDecorator {
     public:
         Translate() {};
         template<class T>

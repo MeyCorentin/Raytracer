@@ -19,7 +19,7 @@
 #include "Camera/Camera.hpp"
 #include "Light/DirectionalLight.hpp"
 #include "Light/AmbientLight.hpp"
-#include "Objects/Transforms/Translate.hpp"
+#include "Objects/ObjectDecorator/Translate.hpp"
 #include "Parser/PShape.hpp"
 #include "Parser/PMaterial.hpp"
 #include "Parser/PLight.hpp"

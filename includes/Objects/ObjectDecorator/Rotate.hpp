@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "interface/ITransform.hpp"
+#include "interface/IObjectDecorator.hpp"
 
-class Rotate: public ITransform {
+class Rotate: public IObjectDecorator {
     public:
         Rotate() {};
         template<class T>

@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 #include <libconfig.h++>
-#include "Objects/Transforms/Translate.hpp"
+#include "Objects/ObjectDecorator/Translate.hpp"
 #include "Parser/PShape.hpp"
 
 class PTransformation {
