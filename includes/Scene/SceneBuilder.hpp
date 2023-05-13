@@ -57,7 +57,7 @@ class SceneBuilder {
             *cam = Camera(origin, rect);
             cam->setResolution(image_width, image_height);
             cam->setAntialiasing(antialisaing);
-            cam->setAntialiasing(maxDepth);
+            cam->setMaxDepth(maxDepth);
             scene->cam = cam;
         }
         Camera *getCamera()

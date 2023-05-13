@@ -74,11 +74,13 @@ void ppm_output(std::ostream &out, Math::Vector3D pixel_color, int antialisaing)
     }
 }
 
-Math::Point3D generate_color(Ray* r, hit_record* rec, Scene* scene) {
+Math::Point3D generate_color(Ray* r, hit_record* rec, Scene* scene, int maxDepth) {
 
     Ray reflection;
     Math::Vector3D attenuation;
 
+    if (maxDepth <= 0)
+        return Math::Point3D(0, 0, 0);
     if (!scene->hit_global(*r, 0.001, INFINITY, *rec, false))
     {
         Math::Point3D unit_direction = Math::VecToPoint(*r->direction).unit_vector();
@@ -104,7 +106,7 @@ void raytracer(Scene *scene)
                 double u = (i + random_gen()) / (scene->getCam()->getWidth() - 1);
                 double v = (j + random_gen()) / (scene->getCam()->getHeight() - 1);
                 Ray *r = scene->getCam()->ray(u, v);
-                color_gen += generate_color(r, rec, scene);
+                color_gen += generate_color(r, rec, scene, scene->getCam()->getMaxDepth());
             }
             ppm_output(std::cout, Math::Vector3D(color_gen.x_coords, color_gen.y_coords, color_gen.z_coords), scene->getCam()->getWidth());
             rec->t = INFINITY;
