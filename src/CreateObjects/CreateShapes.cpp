@@ -16,6 +16,7 @@
 #include "Factory/Decorator/FDecorator.hpp"
 #include "Factory/Material/FMaterial.hpp"
 template<>
+
 void FShape<Sphere>::createSpheres()
 {
     for (libconfig::SettingIterator it = _cfg.lookup(data.spheres).begin();it != _cfg.lookup(data.spheres).end();it++, data.vec_spheres.emplace_back(data.mySphere)) {
@@ -70,8 +71,8 @@ void FShape<Plane>::createPlanes()
         data.myPlane.trans = (const std::string)(*it).lookup(".trans");
         data.myPlane.rot = (const std::string)(*it).lookup(".rot");
         FMaterial material(_cfg, data.myPlane.mat, _scene);
-        if (data.myPlane.rot.compare("none") == 0) FDecorator(_cfg, "none", _scene); else FDecorator(_cfg, data.myCone.rot, _scene);
-        if (data.myPlane.trans.compare("none") == 0) FDecorator(_cfg, "none", _scene); else FDecorator(_cfg, data.myCone.trans, _scene);
+        if (data.myPlane.rot.compare("none") == 0) FDecorator(_cfg, "none", _scene); else FDecorator(_cfg, data.myPlane.rot, _scene);
+        if (data.myPlane.trans.compare("none") == 0) FDecorator(_cfg, "none", _scene); else FDecorator(_cfg, data.myPlane.trans, _scene);
     }
 }
 
