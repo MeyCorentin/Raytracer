@@ -14,8 +14,16 @@
 #include <libconfig.h++>
 #include "Objects/ObjectDecorator/Translate.hpp"
 #include "Objects/ObjectDecorator/Rotate.hpp"
+#include "Scene/Scene.hpp"
 
-class PDecorator{
+
+
+template <class T>
+class DecoratorFactory {
+
+};
+
+class PDecorator {
         protected:
         private:
             const libconfig::Config& _cfg;
@@ -27,41 +35,13 @@ class PDecorator{
             struct Rot {
                 double x, y, z;
             } _rot;
-
-            template<class T>
-            void setTranslation(const std::string name, Scene *scene)
-            {
-                if (name.compare("none") == 0) {
-                    _trans.x = 0;
-                    _trans.y = 0;
-                    _trans.z = 0;
-                } else {
-                    _trans.x = _cfg.lookup(transfo + "." + name + ".x");
-                    _trans.y = _cfg.lookup(transfo + "." + name + ".y");
-                    _trans.z = _cfg.lookup(transfo + "." + name + ".z");
-                }
-                scene->decorator_list.insert(std::pair<const std::string, Math::Vector3D>(name, Math::Vector3D(_rot.x, _rot.y, _rot.z)));
-            }
-            template<class T>
-            void setRotation(const std::string name, Scene *scene)
-            {
-                if (name.compare("none") == 0) {
-                    _rot.x = 0;
-                    _rot.y = 0;
-                    _rot.z = 0;
-                } else {
-                    _rot.x = _cfg.lookup(transfo + "." + name + ".x");
-                    _rot.y = _cfg.lookup(transfo + "." + name + ".y");
-                    _rot.z = _cfg.lookup(transfo + "." + name + ".z");
-                }
-                scene->decorator_list.insert(std::pair<const std::string, Math::Vector3D>(name, Math::Vector3D(_rot.x, _rot.y, _rot.z)));
-            }
+            void setTranslation(const std::string name, Scene *scene);
+            void setRotation(const std::string name, Scene *scene);
         public:
-            template<class T>
             void setDecorator(const std::string name, Scene *scene)
             {
-                setRotation<T>(name, scene);
-                setTranslation<T>(name, scene);
+                setRotation(name, scene);
+                setTranslation(name, scene);
             }
             PDecorator(const libconfig::Config& cfg): _cfg(cfg){}
             Translation getTranslation()const{return _trans;}
