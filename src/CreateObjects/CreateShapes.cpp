@@ -5,10 +5,18 @@
 ** PShape
 */
 
-#include "../includes/Parser/PShape.hpp"
-
+#include "Factory/Shape/FShape.hpp"
+#include "Objects/ObjectDecorator/Rotate.hpp"
+#include "Objects/ObjectDecorator/Translate.hpp"
+#include "Objects/Shapes/Cylinder.hpp"
+#include "Objects/Shapes/Sphere.hpp"
+#include "Objects/Shapes/Plane.hpp"
+#include "Objects/Shapes/Cone.hpp"
+#include "Objects/Shapes/Plane.hpp"
+#include "Factory/Decorator/FDecorator.hpp"
+#include "Factory/Material/FMaterial.hpp"
 template<>
-void ShapeFactory<Sphere>::createSpheres()
+void FShape<Sphere>::createSpheres()
 {
     for (libconfig::SettingIterator it = _cfg.lookup(data.spheres).begin();it != _cfg.lookup(data.spheres).end();it++, data.vec_spheres.emplace_back(data.mySphere)) {
         data.mySphere.x = (*it).lookup(".x"), data.mySphere.y = (*it).lookup(".y"), data.mySphere.z = (*it).lookup(".z");
@@ -16,14 +24,14 @@ void ShapeFactory<Sphere>::createSpheres()
         data.mySphere.mat = (const std::string)(*it).lookup(".mat");
         data.mySphere.trans = (const std::string)(*it).lookup(".trans");
         data.mySphere.rot = (const std::string)(*it).lookup(".rot");
-        _pmaterial->setMaterial(data.mySphere.mat, _scene);
-        if (data.mySphere.rot.compare("none") == 0) _decorator->setDecorator("none", _scene); else _decorator->setDecorator(data.mySphere.rot, _scene);
-        if (data.mySphere.trans.compare("none") == 0) _decorator->setDecorator("none", _scene); else _decorator->setDecorator(data.mySphere.trans, _scene);
+        FMaterial material(_cfg, data.mySphere.mat, _scene);
+        if (data.mySphere.rot.compare("none") == 0) FDecorator(_cfg, "none", _scene); else FDecorator(_cfg, data.mySphere.rot, _scene);
+        if (data.mySphere.trans.compare("none") == 0) FDecorator(_cfg, "none", _scene); else FDecorator(_cfg, data.mySphere.trans, _scene);
     }
 }
 
 template<>
-void ShapeFactory<Cone>::createCones()
+void FShape<Cone>::createCones()
 {
     for (libconfig::SettingIterator it = _cfg.lookup(data.cones).begin();it != _cfg.lookup(data.cones).end();it++, data.vec_cones.emplace_back(data.myCone)) {
         data.myCone.x = (*it).lookup(".x"), data.myCone.y = (*it).lookup(".y"), data.myCone.z = (*it).lookup(".z");
@@ -31,14 +39,14 @@ void ShapeFactory<Cone>::createCones()
         data.myCone.mat = (const std::string)(*it).lookup(".mat");
         data.myCone.trans = (const std::string)(*it).lookup(".trans");
         data.myCone.rot = (const std::string)(*it).lookup(".rot");
-        _pmaterial->setMaterial(data.myCone.mat, _scene);
-        if (data.myCone.rot.compare("none") == 0) _decorator->setDecorator("none", _scene); else _decorator->setDecorator(data.myCone.rot, _scene);
-        if (data.myCone.trans.compare("none") == 0) _decorator->setDecorator("none", _scene); else _decorator->setDecorator(data.myCone.trans, _scene);
+        FMaterial material(_cfg, data.myCone.mat, _scene);
+        if (data.myCone.rot.compare("none") == 0) FDecorator(_cfg, "none", _scene); else FDecorator(_cfg, data.myCone.rot, _scene);
+        if (data.myCone.trans.compare("none") == 0) FDecorator(_cfg, "none", _scene); else FDecorator(_cfg, data.myCone.trans, _scene);
     }
 }
 
 template<>
-void ShapeFactory<Cylinder>::createCylinders()
+void FShape<Cylinder>::createCylinders()
 {
     for (libconfig::SettingIterator it = _cfg.lookup(data.cylinder).begin();it != _cfg.lookup(data.cylinder).end();it++, data.vec_cylinders.emplace_back(data.myCylinder)) {
         data.myCylinder.x = (*it).lookup(".x"), data.myCylinder.y = (*it).lookup(".y"), data.myCylinder.z = (*it).lookup(".z");
@@ -46,14 +54,14 @@ void ShapeFactory<Cylinder>::createCylinders()
         data.myCylinder.mat = (const std::string)(*it).lookup(".mat");
         data.myCylinder.trans = (const std::string)(*it).lookup(".trans");
         data.myCylinder.rot = (const std::string)(*it).lookup(".rot");
-        _pmaterial->setMaterial(data.myCylinder.mat, _scene);
-        if (data.myCylinder.rot.compare("none") == 0) _decorator->setDecorator("none", _scene); else _decorator->setDecorator(data.myCylinder.rot, _scene);
-        if (data.myCylinder.trans.compare("none") == 0) _decorator->setDecorator("none", _scene); else _decorator->setDecorator(data.myCylinder.trans, _scene);
+        FMaterial material(_cfg, data.myCylinder.mat, _scene);
+        if (data.myCylinder.rot.compare("none") == 0) FDecorator(_cfg, "none", _scene); else FDecorator(_cfg, data.myCylinder.rot, _scene);
+        if (data.myCylinder.trans.compare("none") == 0) FDecorator(_cfg, "none", _scene); else FDecorator(_cfg, data.myCylinder.trans, _scene);
     }
 }
 
 template<>
-void ShapeFactory<Plane>::createPlanes()
+void FShape<Plane>::createPlanes()
 {
     for (libconfig::SettingIterator it = _cfg.lookup(data.planes).begin();it != _cfg.lookup(data.planes).end();it++, data.vec_planes.emplace_back(data.myPlane)) {
         data.myPlane.vx = (*it).lookup(".vector.x"),data.myPlane.vy = (*it).lookup(".vector.y"),data.myPlane.vz = (*it).lookup(".vector.z");
@@ -61,14 +69,14 @@ void ShapeFactory<Plane>::createPlanes()
         data.myPlane.mat = (const std::string)(*it).lookup(".mat");
         data.myPlane.trans = (const std::string)(*it).lookup(".trans");
         data.myPlane.rot = (const std::string)(*it).lookup(".rot");
-        _pmaterial->setMaterial(data.myPlane.mat, _scene);
-        if (data.myPlane.rot.compare("none") == 0) _decorator->setDecorator("none", _scene); else _decorator->setDecorator(data.myCone.rot, _scene);
-        if (data.myPlane.trans.compare("none") == 0) _decorator->setDecorator("none", _scene); else _decorator->setDecorator(data.myCone.trans, _scene);
+        FMaterial material(_cfg, data.myPlane.mat, _scene);
+        if (data.myPlane.rot.compare("none") == 0) FDecorator(_cfg, "none", _scene); else FDecorator(_cfg, data.myCone.rot, _scene);
+        if (data.myPlane.trans.compare("none") == 0) FDecorator(_cfg, "none", _scene); else FDecorator(_cfg, data.myCone.trans, _scene);
     }
 }
 
 template<>
-void ShapeFactory<Sphere>::addSpheres()
+void FShape<Sphere>::addSpheres()
 {
     for (size_t i = 0; i < data.vec_spheres.size(); i++) {
         rV = Math::Vector3D(_scene->decorator_list[data.vec_spheres[i].rot].x_coords, _scene->decorator_list[data.vec_spheres[i].rot].y_coords,_scene->decorator_list[data.vec_spheres[i].rot].z_coords);
@@ -78,7 +86,7 @@ void ShapeFactory<Sphere>::addSpheres()
     }
 }
 template<>
-void ShapeFactory<Cone>::addCones()
+void FShape<Cone>::addCones()
 {
     for (size_t i = 0; i < data.vec_cones.size(); i++) {
         rV = Math::Vector3D(_scene->decorator_list[data.vec_cones[i].rot].x_coords, _scene->decorator_list[data.vec_cones[i].rot].y_coords,_scene->decorator_list[data.vec_cones[i].rot].z_coords);
@@ -88,7 +96,7 @@ void ShapeFactory<Cone>::addCones()
     }
 }
 template<>
-void ShapeFactory<Plane>::addPlanes()
+void FShape<Plane>::addPlanes()
 {
     Math::Vector3D vV;
     Math::Point3D pV;
@@ -102,7 +110,7 @@ void ShapeFactory<Plane>::addPlanes()
 }
 
 template<>
-void ShapeFactory<Cylinder>::addCylinders()
+void FShape<Cylinder>::addCylinders()
 {
     for (size_t i = 0; i < data.vec_cylinders.size(); i++) {
         rV = Math::Vector3D(_scene->decorator_list[data.vec_cylinders[i].rot].x_coords, _scene->decorator_list[data.vec_cylinders[i].rot].y_coords,_scene->decorator_list[data.vec_cylinders[i].rot].z_coords);

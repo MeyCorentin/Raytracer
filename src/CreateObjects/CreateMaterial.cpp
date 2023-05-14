@@ -5,20 +5,22 @@
 ** CreateMaterial
 */
 
-#include "../includes/Parser/PMaterial.hpp"
+#include "../includes/Factory/Material/FMaterial.hpp"
 
-void PMaterial::setMetal(const std::string name, Scene *scene)
+void FMaterial::createMetal(const std::string name, Scene *scene)
 {
-    _metal.r = _cfg.lookup(mat + "." + name + ".r");
-    _metal.g = _cfg.lookup(mat + "." + name + ".g");
-    _metal.b = _cfg.lookup(mat + "." + name + ".b");
-    scene->material_list.insert(std::pair<const std::string, std::shared_ptr<Material>>(name, std::make_shared<Metal>(Math::Vector3D(_metal.r, _metal.g, _metal.b))));
+    data._metal.r = _cfg.lookup(data.mat + "." + name + ".r");
+    data._metal.g = _cfg.lookup(data.mat + "." + name + ".g");
+    data._metal.b = _cfg.lookup(data.mat + "." + name + ".b");
+    Math::Vector3D mV = Math::Vector3D(data._metal.r, data._metal.g, data._metal.b);
+    scene->material_list.insert(std::pair<const std::string, std::shared_ptr<Material>>(name, std::make_shared<Metal>(mV)));
 }
 
-void PMaterial::setMate(const std::string name, Scene *scene)
+void FMaterial::createMate(const std::string name, Scene *scene)
 {
-    _mate.r = _cfg.lookup(mat + "." + name + ".r");
-    _mate.g = _cfg.lookup(mat + "." + name + ".g");
-    _mate.b = _cfg.lookup(mat + "." + name + ".b");
-    scene->material_list.insert(std::pair<const std::string, std::shared_ptr<Material>>(name, std::make_shared<Mate>(Math::Vector3D(_mate.r, _mate.g, _mate.b))));
+    data._mate.r = _cfg.lookup(data.mat + "." + name + ".r");
+    data._mate.g = _cfg.lookup(data.mat + "." + name + ".g");
+    data._mate.b = _cfg.lookup(data.mat + "." + name + ".b");
+    Math::Vector3D mV = Math::Vector3D(data._mate.r, data._mate.g, data._mate.b);
+    scene->material_list.insert(std::pair<const std::string, std::shared_ptr<Material>>(name, std::make_shared<Mate>(mV)));
 }
