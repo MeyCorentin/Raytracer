@@ -16,7 +16,6 @@
 
 class DLight: public ILight {
     public:
-        //DirectionalLight
         DLight(Math::Vector3D *direction, Math::Vector3D color, double intensity) {
             this->direction = direction;
             this->color = color;

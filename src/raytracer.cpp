@@ -30,7 +30,6 @@ double clamp(double x, double min, double max) {
 
 
 double random_gen() {
-    // Returns a random real in [0,1).
     return rand() / (RAND_MAX + 1.0);
 }
 

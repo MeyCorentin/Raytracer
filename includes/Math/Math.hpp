@@ -27,7 +27,7 @@ namespace Math
     Point3D operator+(const Point3D &u, const Vector3D &v);
     Point3D operator-(const Point3D &u, const Point3D &v);
     Vector3D operator*(double scalar, const Vector3D& v);
-    Vector3D operator-(Vector3D &u, Vector3D &v);
+    Vector3D operator-(Vector3D u, Vector3D v);
     Vector3D operator*(Vector3D &u, Vector3D &v);
 }
 

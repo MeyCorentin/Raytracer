@@ -11,9 +11,7 @@
 
 class Ray {
     public:
-        // Default constructor
         Ray() {};
-        // Init constructor
         Ray(Math::Point3D *origin, Math::Vector3D *direction)
         {
             this->origin = origin;
@@ -25,13 +23,11 @@ class Ray {
             this->origin = &origin;
             this->direction = d;
         };
-        // Move constructor
         Ray(Ray &other)
         {
             this->origin  = other.origin;
             this->direction = other.direction;
         }
-        // Copy constructor
         Ray(const Ray &obj)
         {
             origin = new Math::Point3D;
@@ -39,7 +35,6 @@ class Ray {
             *origin = *obj.origin;
             *direction = *obj.direction;
         }
-        // Copy operator
         Ray& operator=(Ray other)
         {
             origin = other.origin;

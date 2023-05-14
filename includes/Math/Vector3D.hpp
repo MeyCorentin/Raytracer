@@ -22,7 +22,6 @@ namespace Math
                     this->y_coords = 0;
                     this->z_coords = 0;
                 };
-                // Init constructor
                 Vector3D(double x, double y, double z)
                 {
                     this->x_coords = x;
@@ -30,14 +29,12 @@ namespace Math
                     this->z_coords = z;
                 }
 
-                //Move constructor
                 Vector3D(Vector3D &other)
                 {
                     this->x_coords = other.x_coords;
                     this->y_coords = other.y_coords;
                     this->z_coords = other.z_coords;
                 }
-                // Copy constructor
                 Vector3D(const Vector3D &obj)
                 {
                     x_coords = obj.x_coords;
@@ -45,7 +42,6 @@ namespace Math
                     z_coords = obj.z_coords;
                 }
                 ~Vector3D() {};
-                // Copy operator
                 Vector3D& operator=(Vector3D other)
                 {
                     x_coords = other.x_coords;
@@ -73,7 +69,6 @@ namespace Math
                 Vector3D operator*(double t) {
                     return Vector3D(t*this->x_coords, t*this->y_coords, t*this->z_coords);
                 }
-                // Return he length of the vector
                 double length()
                 {
                     return sqrt(((this->x_coords) * (this->x_coords)) + ((this->y_coords) * (this->y_coords)) + ((this->z_coords) * (this->z_coords)));
@@ -92,7 +87,6 @@ namespace Math
                         return Vector3D(this->x_coords / this->length(), this->y_coords / this->length(), this->z_coords / this->length());
                     return *this;
                 }
-                // Return the dot of two vector
                 double dot_v(Vector3D *other)
                 {
                     return this->x_coords * other->x_coords + this->y_coords * other->y_coords + this->z_coords * other->z_coords;

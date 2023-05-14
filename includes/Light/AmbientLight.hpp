@@ -13,7 +13,6 @@
 #include "main.hpp"
 
 class ALight: public ILight {
-    //Ambient Light
     public:
         ALight( Math::Vector3D color, double intensity) {
             this->color = color;

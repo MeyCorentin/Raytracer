@@ -43,7 +43,7 @@ Math::Point3D Math::operator-(const Math::Point3D &u, const Math::Point3D &v) {
 Math::Vector3D Math::operator*(double scalar, const Math::Vector3D& v) {
     return Math::Vector3D(v.x_coords * scalar, v.y_coords * scalar, v.z_coords * scalar);
 }
-Math::Vector3D Math::operator-(Math::Vector3D &u, Math::Vector3D &v) {
+Math::Vector3D Math::operator-(Math::Vector3D u, Math::Vector3D v) {
     return Math::Vector3D(u.x_coords - v.x_coords, u.y_coords - v.y_coords, u.z_coords - v.z_coords);
 }
 Math::Vector3D Math::operator*(Math::Vector3D &u, Math::Vector3D &v) {

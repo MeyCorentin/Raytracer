@@ -44,7 +44,6 @@ class Cone : public IShape {
                     Math::Point3D intersection_point = r.at(t1);
                     if (intersection_point.y_coords < origin->y_coords) {
                         rec.t = t1;
-                        // Math::Point3D normal = Math::Point3D(intersection_point.x_coords - origin->x_coords, -radius / height, intersection_point.z_coords - origin->z_coords);
                         Math::Point3D normal = (intersection_point - *origin) / radius;
                         Math::Point3D shading_color = 0.5 * (normal + Math::Vector3D(1, 1, 1));
                         rec.normal =  sphere_color * shading_color;

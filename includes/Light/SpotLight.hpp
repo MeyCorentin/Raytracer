@@ -11,7 +11,6 @@
 #include "Scene/Scene.hpp"
 
 class Slight: public ILight {
-    //Spot Light
     public:
         Slight();
         ~Slight();

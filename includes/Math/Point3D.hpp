@@ -18,28 +18,24 @@ namespace Math
 {
     class Point3D {
         public:
-            // Default constructor
             Point3D()
             {
                 this->x_coords = 0;
                 this->y_coords = 0;
                 this->z_coords = 0;
             };
-            // Init constructor
             Point3D(double x, double y, double z)
             {
                 this->x_coords = x;
                 this->y_coords = y;
                 this->z_coords = z;
             }
-            //Move constructor
             Point3D(Point3D &other)
             {
                 this->x_coords = other.x_coords;
                 this->y_coords = other.y_coords;
                 this->z_coords = other.z_coords;
             }
-            // Copy constructor
             Point3D(const Point3D &obj)
             {
                 x_coords = obj.x_coords;
@@ -47,7 +43,6 @@ namespace Math
                 z_coords = obj.z_coords;
             }
             ~Point3D() {};
-            // Copy operator
             Point3D& operator=(Point3D other)
             {
                 x_coords = other.x_coords;
@@ -65,7 +60,6 @@ namespace Math
                 z_coords -= other.z_coords;
                 return *this;
             }
-            // Return the dot of two vector
             double dot_v(Vector3D *other)
             {
                 return x_coords * other->x_coords + y_coords * other->y_coords + z_coords * other->z_coords;

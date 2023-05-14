@@ -17,7 +17,6 @@ namespace Shape
     class Sphere;
     class Triangle3D;
     class Cone;
-    // class Plane;
 }
 
 class SceneBuilder {
