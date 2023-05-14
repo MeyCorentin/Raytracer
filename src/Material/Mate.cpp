@@ -19,7 +19,8 @@ Math::Vector3D Mate::getValue()
 }
 
 bool Mate::rebound(Ray ray,  hit_record hit, Ray &reflection ,Math::Vector3D &attenuation) {
-    reflection = Ray(&hit.p, new Math::Vector3D(hit.normal.x_coords, hit.normal.y_coords, hit.normal.z_coords));
+    Math::Vector3D temp_normal = Math::PointToVec(hit.normal);
+    reflection = Ray(&hit.p, &temp_normal);
     attenuation = this->value;
     return true;
 };

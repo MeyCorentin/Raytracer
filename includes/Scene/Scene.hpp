@@ -33,7 +33,7 @@ class Scene {
                         return true;
                     _hit = true;
                     t_max = temp_rec.t;
-                    Math::Point3D temp_color = {0, 0, 0};
+                    Math::Point3D temp_color(0, 0, 0);
                     for (const std::shared_ptr<ILight>& light: light_list)
                     {
                         light->computeLight(*this, r, temp_rec, object, object_list);

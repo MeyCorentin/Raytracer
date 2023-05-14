@@ -20,6 +20,7 @@ class Plane: public IShape {
             this->mat = mat_value;
         };
         ~Plane() {};
+        
         bool hits(const Ray& r, double t_min, double t_max, hit_record& rec) override {
             double t = dot(Math::PointToVec(origin) - Math::PointToVec(*r.origin), normal) / (dot(*r.direction ,normal));
 
@@ -28,10 +29,9 @@ class Plane: public IShape {
                 rec.intersection = *r.origin + Math::VecToPoint(*r.direction * t);
                 rec.normal = Math::VecToPoint(normal);
                 rec.mat = mat;
-                return (true);
+                return true;
             }
-
-            return(false);
+            return false;
         }
         std::shared_ptr<Material> getMat()
         {

@@ -15,7 +15,7 @@ Metal::Metal(Math::Vector3D value) {
 
 bool Metal::rebound(Ray ray,  hit_record hit, Ray &reflection ,Math::Vector3D &attenuation) {
     Math::Vector3D unit_direction = ray.direction->unit_vector();
-    Math::Vector3D temp_vector =  Math::Vector3D(hit.normal.x_coords, hit.normal.y_coords, hit.normal.z_coords);
+    Math::Vector3D temp_vector =  Math::PointToVec(hit.normal);
     Math::Vector3D reflected = reflect(&unit_direction, temp_vector);
     reflection = Ray(&hit.normal, &reflected);
     attenuation = this->value;

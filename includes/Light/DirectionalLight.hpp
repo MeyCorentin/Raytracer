@@ -30,18 +30,20 @@ class DLight: public ILight {
             std::vector<std::shared_ptr<IObject>> object_list
             )
         {
-            double light_intensity = 0.0;
             Math::Vector3D mat_value = object.get()->getMat().get()->getValue();
             Math::Point3D hit_point = *r.origin + (Math::VecToPoint(*r.direction) * temp_rec.t);
             Math::Vector3D normal = Math::PointToVec(hit_point - *(object.get()->getOrigin())).unit_vector();
             Math::Vector3D direction_light = -(direction->unit_vector());
-            Ray shadow_ray = Ray {&hit_point, &direction_light};
+
             if (dot(normal, direction_light) < 0) {
                 normal = -normal;
             }
-            if (!scene.hit_global(shadow_ray,  0.0000001, INFINITY,  temp_rec, true))
-                    light_intensity = static_cast<double>(this->intensity);
-            double light_power = std::max(dot(normal, direction_light), 0.0) * light_intensity;
+            if (scene.hit_global(Ray(&hit_point, &direction_light),  0.0000001, INFINITY,  temp_rec, true))
+            {
+                temp_rec.light_result = Math::Point3D(0,0,0);
+                return true;
+            }
+            double light_power = std::max(dot(normal, direction_light), 0.0) * this->intensity;
             Math::Vector3D light_reflected = mat_value / M_PI;
             Math::Vector3D temp_result = mat_value * this->color  * light_power;
             Math::Vector3D result =  temp_result * light_reflected;

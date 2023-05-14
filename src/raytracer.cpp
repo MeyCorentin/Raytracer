@@ -55,31 +55,20 @@ Math::Point3D random_in_hemisphere(Math::Point3D& normal) {
 
 
 void ppm_output(std::ostream &out, Math::Vector3D pixel_color, int antialisaing) {
-    if ((pixel_color.x_coords) >= 0 && ( pixel_color.y_coords) >= 0 && (pixel_color.z_coords) >= 0)
-    {
-        double r = pixel_color.x_coords;
-        double g = pixel_color.y_coords;
-        double b = pixel_color.z_coords;
-        double scale = 1.0 / antialisaing;
-        r = sqrt(scale * r);
-        g = sqrt(scale * g);
-        b = sqrt(scale * b);
-        std::cout << static_cast<int>(256 * clamp(r, 0.0, 0.999)) << ' '
-            << static_cast<int>(256 * clamp(g, 0.0, 0.999)) << ' '
-            << static_cast<int>(256 * clamp(b, 0.0, 0.999)) << '\n';
-    }
+    std::cout << static_cast<int>(256 * clamp(sqrt(1.0 / antialisaing * pixel_color.x_coords), 0.0, 0.999)) << ' '
+        << static_cast<int>(256 * clamp(sqrt(1.0 / antialisaing * pixel_color.y_coords), 0.0, 0.999)) << ' '
+        << static_cast<int>(256 * clamp(sqrt(1.0 / antialisaing * pixel_color.z_coords), 0.0, 0.999)) << '\n';
 }
 
-Math::Point3D generate_color(Ray* r, hit_record* rec, Scene* scene, int maxDepth) {
+Math::Point3D generate_color(Ray* r, hit_record* rec, Scene* scene) {
 
     Ray reflection;
     Math::Vector3D attenuation;
+    Math::Point3D unit_direction;
 
-    if (maxDepth <= 0)
-        return Math::Point3D(0, 0, 0);
     if (!scene->hit_global(*r, 0.001, INFINITY, *rec, false))
     {
-        Math::Point3D unit_direction = Math::VecToPoint(*r->direction).unit_vector();
+        unit_direction = Math::VecToPoint(*r->direction).unit_vector();
         double t = 0.5 * (unit_direction.y_coords + 1.0);
         return (1.0 - t) * Math::Point3D(1.0, 1.0, 1.0) + t * Math::Point3D(0.5, 0.7, 1.0);
     }
@@ -93,18 +82,27 @@ void raytracer(Scene *scene)
 {
     hit_record *rec = new hit_record();
     Math::Point3D color_gen;
-    std::cout << "P3\n" << scene->getCam()->getWidth() << " " << scene->getCam()->getHeight() << "\n255\n";
-    for (double j = scene->getCam()->getHeight() - 1; j >= 0; --j) {
-        for (double i = 0; i < scene->getCam()->getWidth(); ++i)
+    Ray *r;
+    Camera* cam = scene->getCam();
+    double u;
+    double v;
+    int width = cam->getWidth();
+    int height = cam->getHeight();
+    int antialiasing = cam->getAntialiasing();
+
+
+    std::cout << "P3\n" << width << " " << height<< "\n255\n";
+    for (double j = height - 1; j >= 0; --j) {
+        for (double i = 0; i < width; ++i)
         {
             color_gen = Math::Point3D {0, 0, 0};
-            for (int s = 0; s < scene->getCam()->getAntialiasing(); ++s) {
-                double u = (i + random_gen()) / (scene->getCam()->getWidth() - 1);
-                double v = (j + random_gen()) / (scene->getCam()->getHeight() - 1);
-                Ray *r = scene->getCam()->ray(u, v);
-                color_gen += generate_color(r, rec, scene, scene->getCam()->getMaxDepth());
+            for (int s = 0; s < antialiasing; ++s) {
+                u = (i + random_gen()) / (width - 1);
+                v = (j + random_gen()) / (height - 1);
+                r = cam->ray(u, v);
+                color_gen += generate_color(r, rec, scene);
             }
-            ppm_output(std::cout, Math::Vector3D(color_gen.x_coords, color_gen.y_coords, color_gen.z_coords), scene->getCam()->getWidth());
+            ppm_output(std::cout, Math::Vector3D(color_gen.x_coords, color_gen.y_coords, color_gen.z_coords), width);
             rec->t = INFINITY;
         }
     }
