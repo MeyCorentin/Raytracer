@@ -39,7 +39,7 @@ void PShape::createCylinders(const libconfig::Config& cfg, PMaterial *pmaterial,
 {
     for (libconfig::SettingIterator it = _cfg.lookup(cylinder).begin();it != _cfg.lookup(cylinder).end();it++, vec_cylinders.emplace_back(myCylinder)) {
         myCylinder.x = (*it).lookup(".x"), myCylinder.y = (*it).lookup(".y"), myCylinder.z = (*it).lookup(".z");
-        myCylinder.ra = (*it).lookup(".r"), myCylinder.h = (*it).lookup(".h");
+        myCylinder.ra = (*it).lookup(".r");
         myCylinder.mat = (const std::string)(*it).lookup(".mat");
         myCylinder.trans = (const std::string)(*it).lookup(".trans");
         myCylinder.rot = (const std::string)(*it).lookup(".rot");
@@ -100,6 +100,6 @@ void PShape::addCylinders()
         rV = Math::Vector3D(_scene->decorator_list[vec_cylinders[i].rot].x_coords, _scene->decorator_list[vec_cylinders[i].rot].y_coords,_scene->decorator_list[vec_cylinders[i].rot].z_coords);
         tV = Math::Vector3D(_scene->decorator_list[vec_cylinders[i].trans].x_coords, _scene->decorator_list[vec_cylinders[i].trans].y_coords, _scene->decorator_list[vec_cylinders[i].trans].z_coords);
         oV = new Math::Point3D(vec_cylinders[i].x,vec_cylinders[i].y, vec_cylinders[i].z);
-        _sceneBuilder->add_object(Rotate(Translate(Cylinder(oV, vec_cylinders[i].ra, vec_cylinders[i].h, _scene->material_list[vec_cylinders[i].mat]), tV), rV));
+        _sceneBuilder->add_object(Rotate(Translate(Cylinder(oV, vec_cylinders[i].ra, _scene->material_list[vec_cylinders[i].mat]), tV), rV));
     }
 }

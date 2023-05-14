@@ -48,7 +48,7 @@ class PShape {
             } myCone;
             std::vector<MyCone> vec_cones;
             struct MyCylinder {
-                double x, y, z, ra, h;
+                double x, y, z, ra;
                 std::string mat, rot, trans;
             } myCylinder;
             std::vector<MyCylinder> vec_cylinders;

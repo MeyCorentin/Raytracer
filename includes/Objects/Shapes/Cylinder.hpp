@@ -16,13 +16,11 @@
 class Cylinder: public IShape {
     public:
         Cylinder() {};
-        Cylinder(Math::Point3D *origin, double radius, double height, std::shared_ptr<Material> mat_value)
+        Cylinder(Math::Point3D *origin, double radius, std::shared_ptr<Material> mat_value)
         {
-
             this->origin = origin;
             this->radius = radius;
             this->mat = mat_value;
-            this->height = height;
         };
         ~Cylinder() {};
         bool hits(const Ray& r, double t_min, double t_max, hit_record& rec) {
@@ -73,7 +71,6 @@ class Cylinder: public IShape {
         std::shared_ptr<Material> mat;
         Math::Point3D *origin;
         double radius;
-        double height;
 
     protected:
     private:
