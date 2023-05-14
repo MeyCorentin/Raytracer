@@ -72,6 +72,7 @@ class PShape {
                 if (std::is_same<T, Sphere>::value) addSpheres();
                 if (std::is_same<T, Cone>::value) addCones();
                 if (std::is_same<T, Plane>::value) addPlanes();
+                if (std::is_same<T, Cylinder>::value) addCylinders();
             }
         public:
 
