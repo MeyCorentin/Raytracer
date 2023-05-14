@@ -16,7 +16,25 @@
 #include "Objects/Shapes/Rectangle3D.hpp"
 
 class DataCamera {
-
+    public:
+        const std::string cam = "camera";
+        const std::string res = cam + ".resolution";
+        const std::string ratio = cam + ".ratio";
+        struct Res {
+            int width, height;
+        } _res;
+        struct Antialisaing {
+            int value;
+        } _anti;
+        struct Ratio {
+            double value;
+        } _ratio;
+        struct Depth {
+            int value;
+        } _depth;
+        struct FieldOfView {
+            double value;
+        } _fov;
 };
 
 class PCamera {
@@ -25,24 +43,6 @@ class PCamera {
             DataCamera data;
         private:
             const libconfig::Config& _cfg;
-            const std::string cam = "camera";
-            const std::string res = cam + ".resolution";
-            const std::string ratio = cam + ".ratio";
-            struct Res {
-                int width, height;
-            } _res;
-            struct Antialisaing {
-                int value;
-            } _anti;
-            struct Ratio {
-                double value;
-            } _ratio;
-            struct Depth {
-                int value;
-            } _depth;
-            struct FieldOfView {
-                double value;
-            } _fov;
             void SettingsCamera();
             void SetCamera(Camera*, Rectangle3D*, Math::Point3D*, Math::Point3D*, Math::Point3D*);
         public:
@@ -52,12 +52,6 @@ class PCamera {
                 SettingsCamera();
                 SetCamera(cam, rect, origin, horizontal, vertical);
             }
-            Res getResolution()const{return _res;}
-            Antialisaing getAntialisaing()const{return _anti;}
-            Ratio getRation()const{return _ratio;}
-            Depth getDepth()const{return _depth;}
-
-            FieldOfView getFOV()const{return _fov;}
     };
 
 #endif /* !PCAMERA_HPP_ */

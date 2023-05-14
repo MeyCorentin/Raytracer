@@ -5,28 +5,28 @@
 ** CreateLights
 */
 
-#include "../includes/Parser/PLight.hpp"
+#include "../includes/Factory/Lights/FLights.hpp"
 
-void PLight::createDirectionals()
+void FLight::createDirectionals()
 {
-    for (libconfig::SettingIterator it = _cfg.lookup(direction).begin();it != _cfg.lookup(direction).end();it++, vec_direction.emplace_back(myDirection)) {
-        myDirection.x = (*it).lookup(".direction.x"), myDirection.y = (*it).lookup(".direction.y"), myDirection.z = (*it).lookup(".direction.z");
-        myDirection.r = (*it).lookup(".color.r"), myDirection.g = (*it).lookup(".color.g"), myDirection.b = (*it).lookup(".color.b");
-        myDirection.i = (*it).lookup(".i");
+    for (libconfig::SettingIterator it = _cfg.lookup(data.direction).begin();it != _cfg.lookup(data.direction).end();it++, data.vec_direction.emplace_back(data.myDirection)) {
+        data.myDirection.x = (*it).lookup(".direction.x"), data.myDirection.y = (*it).lookup(".direction.y"), data.myDirection.z = (*it).lookup(".direction.z");
+        data.myDirection.r = (*it).lookup(".color.r"), data.myDirection.g = (*it).lookup(".color.g"), data.myDirection.b = (*it).lookup(".color.b");
+        data.myDirection.i = (*it).lookup(".i");
     }
 }
 
-void PLight::createAmbient()
+void FLight::createAmbient()
 {
-    myAmbient.r = _cfg.lookup(ambient + ".r");
-    myAmbient.g = _cfg.lookup(ambient + ".g");
-    myAmbient.b = _cfg.lookup(ambient + ".b");
-    myAmbient.i = _cfg.lookup(ambient + ".i");
+    data.myAmbient.r = _cfg.lookup(data.ambient + ".r");
+    data.myAmbient.g = _cfg.lookup(data.ambient + ".g");
+    data.myAmbient.b = _cfg.lookup(data.ambient + ".b");
+    data.myAmbient.i = _cfg.lookup(data.ambient + ".i");
 }
 
-void PLight::addLights()
+void FLight::addLights()
 {
-    for (size_t i = 0; i < vec_direction.size(); i++)
-        _sceneBuilder->add_light(DLight(new Math::Vector3D(vec_direction[i].x, vec_direction[i].y, vec_direction[i].z), Math::Vector3D(vec_direction[i].r, vec_direction[i].g, vec_direction[i].b), vec_direction[i].i));
-    _sceneBuilder->add_light(ALight(Math::Vector3D(myAmbient.r, myAmbient.g, myAmbient.b), myAmbient.i));
+    for (size_t i = 0; i < data.vec_direction.size(); i++)
+        _sceneBuilder->add_light(DLight(new Math::Vector3D(data.vec_direction[i].x, data.vec_direction[i].y, data.vec_direction[i].z), Math::Vector3D(data.vec_direction[i].r, data.vec_direction[i].g, data.vec_direction[i].b), data.vec_direction[i].i));
+    _sceneBuilder->add_light(ALight(Math::Vector3D(data.myAmbient.r, data.myAmbient.g, data.myAmbient.b), data.myAmbient.i));
 }

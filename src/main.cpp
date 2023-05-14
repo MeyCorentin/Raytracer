@@ -16,15 +16,14 @@
 #include "Objects/Shapes/Cone.hpp"
 #include "Objects/Shapes/Plane.hpp"
 #include "Scene/SceneBuilder.hpp"
-#include "Camera/Camera.hpp"
 #include "Light/DirectionalLight.hpp"
 #include "Light/AmbientLight.hpp"
 #include "Objects/ObjectDecorator/Translate.hpp"
-#include "Parser/PShape.hpp"
-#include "Parser/PMaterial.hpp"
-#include "Parser/PLight.hpp"
-#include "Parser/PDecorator.hpp"
-#include "Parser/PCamera.hpp"
+#include "Factory/Material/FMaterial.hpp"
+#include "Factory/Decorator/FDecorator.hpp"
+#include "Factory/Lights/FLights.hpp"
+#include "Factory/Shape/SetShape.hpp"
+#include "Factory/PCamera.hpp"
 
 void help()
 {
@@ -48,10 +47,8 @@ int main(int ac, char **av) {
     cfg.readFile(av[1]);
     SceneBuilder *sceneBuilder = new SceneBuilder();
     PCamera camera(cfg, sceneBuilder, &cam, &rect, &origin, &horizontal, &vertical);
-
-    PDecorator *decorator = new PDecorator(cfg);
-    PShape shape(cfg, sceneBuilder, decorator, sceneBuilder->getScene());
-    PLight light(cfg, sceneBuilder);
+    SetShape shape(cfg, sceneBuilder, sceneBuilder->getScene());
+    FLight light(cfg, sceneBuilder);
     sceneBuilder->build();
     return 0;
 }
