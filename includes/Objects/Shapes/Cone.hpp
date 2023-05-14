@@ -41,7 +41,7 @@ class Cone : public IShape {
             if (discriminant < 0)
                 return false;
             double t = (-b - sqrt(discriminant)) / (2 * a);
-            if (t > t_max || t < t_min || t > a)
+            if (t > t_max || t < t_min)
                 return false;
             Math::Point3D intersection_point = r.at(t);
             if (intersection_point.y_coords >= origin->y_coords)
