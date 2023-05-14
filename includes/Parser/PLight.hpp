@@ -16,6 +16,14 @@
 #include "Light/DirectionalLight.hpp"
 #include "Light/AmbientLight.hpp"
 
+class DataLights {
+
+};
+
+class LightFactory {
+
+};
+
 class PLight {
         private:
             const libconfig::Config& _cfg;

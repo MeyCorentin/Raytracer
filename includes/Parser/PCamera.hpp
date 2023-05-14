@@ -15,9 +15,14 @@
 #include "Scene/SceneBuilder.hpp"
 #include "Objects/Shapes/Rectangle3D.hpp"
 
+class DataCamera {
+
+};
+
 class PCamera {
         protected:
             SceneBuilder *_sceneBuilder;
+            DataCamera data;
         private:
             const libconfig::Config& _cfg;
             const std::string cam = "camera";
@@ -39,13 +44,13 @@ class PCamera {
                 double value;
             } _fov;
             void SettingsCamera();
-            void CreateCamera(Camera*, Rectangle3D*, Math::Point3D*, Math::Point3D*, Math::Point3D*);
+            void SetCamera(Camera*, Rectangle3D*, Math::Point3D*, Math::Point3D*, Math::Point3D*);
         public:
             PCamera(const libconfig::Config& cfg, SceneBuilder *sceneBuilder, Camera *cam, Rectangle3D *rect, Math::Point3D *origin, Math::Point3D *horizontal, Math::Point3D *vertical): _cfg(cfg)
             {
                 _sceneBuilder = sceneBuilder;
                 SettingsCamera();
-                CreateCamera(cam, rect, origin, horizontal, vertical);
+                SetCamera(cam, rect, origin, horizontal, vertical);
             }
             Res getResolution()const{return _res;}
             Antialisaing getAntialisaing()const{return _anti;}

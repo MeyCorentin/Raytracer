@@ -17,7 +17,7 @@ void PCamera::SettingsCamera()
     _fov.value = _cfg.lookup(cam + ".fieldOfView");
 }
 
-void PCamera::CreateCamera(Camera *cam, Rectangle3D *rect, Math::Point3D *origin, Math::Point3D *horizontal, Math::Point3D *vertical)
+void PCamera::SetCamera(Camera *cam, Rectangle3D *rect, Math::Point3D *origin, Math::Point3D *horizontal, Math::Point3D *vertical)
 {
     _sceneBuilder->createNewScene();
     _sceneBuilder->setCamera(_res.width, _ratio.value, _fov.value, _anti.value, _depth.value, cam, rect, origin, horizontal, vertical);

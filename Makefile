@@ -16,6 +16,8 @@ SRC = src/main.cpp	\
 		src/Objects/Shapes/hit_record.cpp \
 		src/CreateObjects/CreateCamera.cpp	\
 		src/CreateObjects/CreateLights.cpp	\
+		src/CreateObjects/CreateDecorator.cpp	\
+		src/CreateObjects/CreateMaterial.cpp	\
 		src/CreateObjects/CreateShapes.cpp
 
 clean = *.o
