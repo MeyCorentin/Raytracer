@@ -18,16 +18,16 @@
 class Cone : public IShape {
     public:
         Cone() {};
-        Cone(Math::Point3D *origin, double radius, std::shared_ptr<Material> mat_value)
+        Cone(Math::Point3D *origin, double radius, double height, std::shared_ptr<Material> mat_value)
         {
             this->mat = mat_value;
             this->origin = origin;
             this->radius = radius;
+            this->height = height;
         };
         ~Cone() {};
 
         bool hits(const Ray& r, double t_min, double t_max, hit_record& rec) {
-            double height = 7.0;
             Math::Point3D sphere_color(0.8, 0.8, 0.0);
             Math::Vector3D temp_1 =  Math::Vector3D(r.origin->x_coords, r.origin->y_coords, r.origin->z_coords);
             Math::Vector3D temp_2 =  Math::Vector3D(origin->x_coords, origin->y_coords, origin->z_coords);
@@ -57,6 +57,7 @@ class Cone : public IShape {
         }
         Math::Point3D *origin;
         double radius;
+        double height;
         std::shared_ptr<Material> getMat()
         {
             return mat;

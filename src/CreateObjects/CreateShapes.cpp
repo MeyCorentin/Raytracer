@@ -44,8 +44,8 @@ void PShape::createCylinders(const libconfig::Config& cfg, PMaterial *pmaterial,
         myCylinder.trans = (const std::string)(*it).lookup(".trans");
         myCylinder.rot = (const std::string)(*it).lookup(".rot");
         pmaterial->setMaterial(myCylinder.mat, scene);
-        // if (myCylinder(".rot")).compare("none") == 0) decorator->setDecorator<Cylinder>("none", scene); else decorator->setDecorator<Cylinders>(myCylinders.trans, scene);
-        // if (myCylinder(".trans")).compare("none") == 0) decorator->setDecorator<Cylinder>("none", scene); else decorator->setDecorator<Cylinders>(myCylinders.trans, scene);
+        if (myCylinder.rot.compare("none") == 0) decorator->setDecorator<Cylinder>("none", scene); else decorator->setDecorator<Cylinder>(myCylinder.rot, scene);
+        if (myCylinder.trans.compare("none") == 0) decorator->setDecorator<Cylinder>("none", scene); else decorator->setDecorator<Cylinder>(myCylinder.trans, scene);
     }
 }
 
@@ -78,7 +78,7 @@ void PShape::addCones()
         rV = Math::Vector3D(_scene->decorator_list[vec_cones[i].rot].x_coords, _scene->decorator_list[vec_cones[i].rot].y_coords,_scene->decorator_list[vec_cones[i].rot].z_coords);
         tV = Math::Vector3D(_scene->decorator_list[vec_cones[i].trans].x_coords, _scene->decorator_list[vec_cones[i].trans].y_coords, _scene->decorator_list[vec_cones[i].trans].z_coords);
         oV = new Math::Point3D(vec_cones[i].x,vec_cones[i].y, vec_cones[i].z);
-        _sceneBuilder->add_object(Rotate(Translate(Cone(oV, vec_cones[i].ra, _scene->material_list[vec_cones[i].mat]), tV), rV));
+        _sceneBuilder->add_object(Rotate(Translate(Cone(oV, vec_cones[i].ra, vec_cones[i].h, _scene->material_list[vec_cones[i].mat]), tV), rV));
     }
 }
 void PShape::addPlanes()
@@ -91,5 +91,15 @@ void PShape::addPlanes()
         rV = Math::Vector3D(_scene->decorator_list[vec_planes[i].rot].x_coords, _scene->decorator_list[vec_planes[i].rot].y_coords,_scene->decorator_list[vec_planes[i].rot].z_coords);
         tV = Math::Vector3D(_scene->decorator_list[vec_planes[i].trans].x_coords, _scene->decorator_list[vec_planes[i].trans].y_coords, _scene->decorator_list[vec_planes[i].trans].z_coords);
         _sceneBuilder->add_object(Rotate(Translate(Plane(vV, pV, _scene->material_list[vec_planes[i].mat]), tV), rV));
+    }
+}
+
+void PShape::addCylinders()
+{
+    for (size_t i = 0; i < vec_cylinders.size(); i++) {
+        rV = Math::Vector3D(_scene->decorator_list[vec_cylinders[i].rot].x_coords, _scene->decorator_list[vec_cylinders[i].rot].y_coords,_scene->decorator_list[vec_cylinders[i].rot].z_coords);
+        tV = Math::Vector3D(_scene->decorator_list[vec_cylinders[i].trans].x_coords, _scene->decorator_list[vec_cylinders[i].trans].y_coords, _scene->decorator_list[vec_cylinders[i].trans].z_coords);
+        oV = new Math::Point3D(vec_cylinders[i].x,vec_cylinders[i].y, vec_cylinders[i].z);
+        _sceneBuilder->add_object(Rotate(Translate(Cylinder(oV, vec_cylinders[i].ra, vec_cylinders[i].h, _scene->material_list[vec_cylinders[i].mat]), tV), rV));
     }
 }

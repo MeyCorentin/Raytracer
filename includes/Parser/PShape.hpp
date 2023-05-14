@@ -17,6 +17,7 @@
 #include "Objects/Shapes/Sphere.hpp"
 #include "Objects/Shapes/Cone.hpp"
 #include "Objects/Shapes/Plane.hpp"
+#include "Objects/Shapes/Cylinder.hpp"
 #include <type_traits>
 #include <cstdint>
 #include "PMaterial.hpp"
@@ -86,6 +87,7 @@ class PShape {
                 addShape<Sphere>();
                 addShape<Cone>();
                 addShape<Plane>();
+                addShape<Cylinder>();
 
             }
 
