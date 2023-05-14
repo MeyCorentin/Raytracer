@@ -45,6 +45,9 @@ class ALight: public ILight {
                     light_intensity = static_cast<double>(this->intensity);
             Math::Vector3D result = mat_value * this->color  * light_intensity;
             temp_rec.light_result = Math::VecToPoint(result);
+            temp_rec.light_result = Math::Point3D(  clamp(temp_rec.light_result.x_coords, 0.0 , 1.0),
+                                                    clamp(temp_rec.light_result.y_coords, 0.0 , 1.0),
+                                                    clamp(temp_rec.light_result.z_coords, 0.0 , 1.0));
             return true;
         }
         Math::Vector3D color;

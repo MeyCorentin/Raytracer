@@ -20,21 +20,18 @@ class Plane: public IShape {
             this->mat = mat_value;
         };
         ~Plane() {};
-        bool hits(const Ray& r, double t_min, double t_max, hit_record& rec) {
-            double value = dot(normal, *r.direction);
-            double epsilon = 0.0001;
-            if (abs(value) > epsilon) {
-                Math::Point3D v = origin - *r.origin;
-                double distance = dot(Math::PointToVec(v) ,normal) / value;
-                if (distance >= 0.0 && distance > t_min && distance < t_max) {
-                    rec.t = distance;
-                    rec.intersection = r.at(distance);
-                    rec.normal =  Math::VecToPoint(this->mat->getValue()) * Math::VecToPoint(normal);
-                    rec.mat = this->mat;
-                    return true;
-                }
+        bool hits(const Ray& r, double t_min, double t_max, hit_record& rec) override {
+            double t = dot(Math::PointToVec(origin) - Math::PointToVec(*r.origin), normal) / (dot(*r.direction ,normal));
+
+            if (t > 0.00001 &&  t < t_max && t  > t_min) {
+                rec.t = t;
+                rec.intersection = *r.origin + Math::VecToPoint(*r.direction * t);
+                rec.normal = Math::VecToPoint(normal);
+                rec.mat = mat;
+                return (true);
             }
-            return false;
+
+            return(false);
         }
         std::shared_ptr<Material> getMat()
         {
